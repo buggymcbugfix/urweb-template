@@ -1,0 +1,37 @@
+{
+  "pins": {
+    "nixpkgs": {
+      "type": "Channel",
+      "name": "nixpkgs-unstable",
+      "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.05pre998534.d233902339c0/nixexprs.tar.xz",
+      "hash": "sha256-vZOcDniDPc1cS8A4Xi5YE6AGyPIvEpy4GMyayA3SWIM="
+    },
+    "urweb": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "buggymcbugfix",
+        "repo": "urweb"
+      },
+      "branch": "nix",
+      "submodules": false,
+      "revision": "65fff6cf0242f3bfa36564b2bdfbbf3705148d7c",
+      "url": "https://github.com/buggymcbugfix/urweb/archive/65fff6cf0242f3bfa36564b2bdfbbf3705148d7c.tar.gz",
+      "hash": "sha256-iiM/bkuBETncpCN1FlltkAg/Cqk6KS3X+Tjt0DYuyNk="
+    },
+    "urweb-curl": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "buggymcbugfix",
+        "repo": "urweb-curl"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "c7e7c5beed2f6caf77e0c947c0b3713a02b7120a",
+      "url": "https://github.com/buggymcbugfix/urweb-curl/archive/c7e7c5beed2f6caf77e0c947c0b3713a02b7120a.tar.gz",
+      "hash": "sha256-IN2V7VPK/60q2Rt8jG0Kk/nrvovPOp9Sn6oUqFj4VQY="
+    }
+  },
+  "version": 7
+}

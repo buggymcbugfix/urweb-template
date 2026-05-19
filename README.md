@@ -1,0 +1,5 @@
+- For development: `nix-shell` or https://github.com/direnv/direnv
+- For building: `nix-build` (build defined in ./package.nix)
+- Building other packages: `nix-build -A myPackages.<TAB>`
+- Updating dependencies: `npins update`
+- For flake-users: https://github.com/NixOS/flake-compat
