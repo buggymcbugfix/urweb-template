@@ -1,0 +1,38 @@
+# Editor configuration, see http://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = tab
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = off
+
+[*.sql]
+indent_style = tab
+indent_size = 3
+
+[*.{ur,urs}]
+indent_style = tab
+indent_size = 3
+
+[*.{md,txt}]
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 2
+
+[*.ml]
+indent_style = tab
+indent_size = 4
+
+[*.nix]
+indent_style = space
+indent_size = 2
+
+[*.patch]
+trim_trailing_whitespace = false
+
+[*.expected.html]
+trim_trailing_whitespace = false
+

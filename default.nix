@@ -1,5 +1,8 @@
 let
   sources = import ./npins;
+  RED = "\\033[31m";
+  GREEN = "\\033[32m";
+  RESET = "\\033[0m";
 in
 {
   system ? builtins.currentSystem,
@@ -16,12 +19,18 @@ let
         };
         urweb-curl = final.callPackage sources.urweb-curl { };
 
-        urweb-with-deps = final.urweb.withLibraries [
-          final.urweb-curl
-        ];
+        urweb-with-deps = final.urweb.withLibraries {
+          inherit (final)
+            urweb-curl
+            ;
+        };
+
+        mlton = prev.mlton.overrideAttrs (old: {
+          doCheck = false; # borked tests, take AGES to run
+        });
 
         build = final.callPackage ./package.nix {
-          gitRev = final.lib.sources.commitIdFromGitRepo ./.;
+          gitRev = final.lib.sources.commitIdFromGitRepo ./.git; # can't track clean vs dirty
         };
       };
     in
@@ -40,7 +49,100 @@ pkgs.myPackages.build
     inputsFrom = [ pkgs.myPackages.build ];
     packages = with pkgs; [
       npins
+      urweb-with-deps
     ];
+    shellHook = ''
+      # set -o pipefail
+      set -eu
+      pid=""
+      port=""
+      status=""
+      logfile="$(mktemp)"
+      testDb='test.db'
+
+      ,stop() {
+        if [ -n "$pid" ]; then
+          printf 'Killing process %s... ' "$pid"
+          if kill "$pid" 2>/dev/null; then
+            wait "$pid" 2>/dev/null
+            printf "${GREEN}ok${RESET}\n"
+          else
+            printf 'Oops, process %s already dead.\n' "$pid"
+          fi
+          pid=""
+        fi
+        status=""
+      }
+
+      cleanup() {
+        ,stop
+        rm -f "$logfile"
+      }
+      
+      trap cleanup EXIT INT TERM
+
+      ,build() {
+        printf "Building main.exe... "
+        ${pkgs.urweb-with-deps}/bin/urweb-with-libs main -dbms sqlite -db "$testDb" -endpoints endpoints.json \
+          && printf "${GREEN}ok${RESET}\n"
+      }
+
+      ,b() {
+        ,build
+      }
+
+      ,recreate-db() {
+        printf "Recreating db at '%s'\n" "$testDb"
+        rm -f "$testDb" "$testDb"-shm "$testDb"-wal
+        sqlite3 "$testDb" < generated.sql
+      }
+
+      ,run() {
+        if [ ! -x main.exe ]; then
+          ,build
+        fi
+        ,stop
+        if [ ! -f $testDb ]; then
+          ,recreate-db
+        fi
+        printf 'Launching app...\n'
+        printf '**********************************************************************\n' >>"$logfile"
+        date +"%Y-%m-%d %H:%M:%S" >>"$logfile"
+        printf '**********************************************************************\n' >>"$logfile"
+        eval "$(./main.exe -a 127.0.0.1 -p 8000 -P 9000 -d3 3>&1 1>>"$logfile" 2>>"$logfile")"
+        if [ "$status" = 'OK' ]; then
+          printf 'pid = %s\n' "$pid"
+          printf 'port = %s\n' "$port"
+          printf 'Logging to 
+        else
+          printf "${RED}main.exe failed to start${RESET}\n" >&2
+          return
+        fi
+      }
+
+      ,go() {
+        kill -0 $pid 2>/dev/null || ,run
+        url="http://localhost:$port"
+        case "$(uname -s)" in
+          Darwin) open "$url" ;;
+          Linux)  xdg-open "$url" ;;
+          *) printf '%s not supported\n' "$(uname -s)" ;;
+        esac
+      }
+
+      ,help() {
+        printf ',b / ,build:   Build the application.\n'
+        printf ',stop:         Kill the running background server.\n'
+        printf ',recreate-db:  Recreate the test database.\n'
+        printf ',run:          Run the application.\n'
+        printf ',go:           Run the application and launch browser.\n'
+      }
+
+      help() {
+        ,help
+      }
+      set +eu
+    '';
   };
   myPackages = pkgs.myPackages;
 }

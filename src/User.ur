@@ -1,0 +1,18 @@
+type id = int
+
+val show_id = show_int
+
+con row =
+	[
+		UserId = id,
+		Username = string,
+		FirstName = string,
+		LastName = string,
+	]
+
+table tbl :
+	row
+	PRIMARY KEY UserId,
+	CONSTRAINT Uq_Username UNIQUE Username
+
+val getAll = queryL1 (SELECT * FROM tbl ORDER BY tbl.Username)
