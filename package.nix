@@ -57,7 +57,7 @@ stdenv.mkDerivation {
 
     setup() {
       rm -f ${TESTDB} 2>/dev/null
-      sqlite3 ${TESTDB} < ./generated.sql
+      sqlite3 ${TESTDB} < db/generated.sql
     }
 
     setup

@@ -49,6 +49,7 @@ pkgs.myPackages.build
     inputsFrom = [ pkgs.myPackages.build ];
     packages = with pkgs; [
       npins
+      sqlite-interactive
       urweb-with-deps
     ];
     shellHook = ''
@@ -91,10 +92,14 @@ pkgs.myPackages.build
         ,build
       }
 
-      ,recreate-db() {
-        printf "Recreating db at '%s'\n" "$testDb"
+      ,db() {
+        sqlite3 "$testDb" -cmd '.headers on' -cmd 'PRAGMA foreign_keys = ON' "$@"
+      }
+
+      ,db-recreate() {
+        printf "Recreating DB at '%s'\n" "$testDb"
         rm -f "$testDb" "$testDb"-shm "$testDb"-wal
-        sqlite3 "$testDb" < generated.sql
+        sqlite3 "$testDb" < db/generated.sql
       }
 
       ,run() {
@@ -103,7 +108,7 @@ pkgs.myPackages.build
         fi
         ,stop
         if [ ! -f $testDb ]; then
-          ,recreate-db
+          ,db-recreate
         fi
         printf 'Launching app...\n'
         printf '**********************************************************************\n' >>"$logfile"
@@ -113,7 +118,7 @@ pkgs.myPackages.build
         if [ "$status" = 'OK' ]; then
           printf 'pid = %s\n' "$pid"
           printf 'port = %s\n' "$port"
-          printf 'Logging to 
+          printf "Logging to '$logfile'\n"
         else
           printf "${RED}main.exe failed to start${RESET}\n" >&2
           return
@@ -121,7 +126,7 @@ pkgs.myPackages.build
       }
 
       ,go() {
-        kill -0 $pid 2>/dev/null || ,run
+        ,run
         url="http://localhost:$port"
         case "$(uname -s)" in
           Darwin) open "$url" ;;
@@ -131,11 +136,12 @@ pkgs.myPackages.build
       }
 
       ,help() {
-        printf ',b / ,build:   Build the application.\n'
-        printf ',stop:         Kill the running background server.\n'
-        printf ',recreate-db:  Recreate the test database.\n'
-        printf ',run:          Run the application.\n'
-        printf ',go:           Run the application and launch browser.\n'
+        printf ',b / ,build   Build the application.\n'
+        printf ',db           Launch the sqlite3 cli for the test database.\n'
+        printf ',db-recreate  Recreate the test database.\n'
+        printf ',go           Run the application and launch browser.\n'
+        printf ',run          Run the application.\n'
+        printf ',stop         Kill the running background server.\n'
       }
 
       help() {

@@ -4,15 +4,11 @@ val gitRev = return <xml><body>@GIT_REV@</body></xml>
 
 val hello name = return <xml><body>Hello, {[name]}!</body></xml>
 
-val index = hello "World"
-
 val renderUserTr r =
 	<xml>
 		<tr>
-			<th>{[r.UserId]}</th>
-			<th>{[r.Username]}</th>
-			<th>{[r.FirstName]}</th>
-			<th>{[r.LastName]}</th>
+			<td>{[r.UserId]}</td>
+			<td>{[r.Username]}</td>
 		</tr>
 	</xml>
 
@@ -21,13 +17,33 @@ val users =
 	return
 		<xml>
 			<body>
-				{fetchInto srcUsers User.getAll}
+				(* {fetchInto srcUsers User.getAll} *)
+				<active code={
+					spawn
+						(
+							data <- rpc User.getAll;
+							set srcUsers data
+						);
+					return <xml/>
+				}/>
 				<table>
-				<tr><th>ID</th><th>Username</th><th>First Name</th><th>Last Name</th></tr>
+				<tr><th>ID</th><th>Username</th></tr>
 				<dyn signal={
 					users <- signal srcUsers;
 					return (List.mapX renderUserTr users)
 				}/>
 				</table>
+			</body>
+		</xml>
+
+val index =
+	return
+		<xml>
+			<body>
+				<ul>
+					<li><a link={gitRev}>git hash</a></li>
+					<li><a link={hello "World"}>hello world</a></li>
+					<li><a link={users}>list of all users</a></li>
+				</ul>
 			</body>
 		</xml>

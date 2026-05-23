@@ -5,8 +5,6 @@ con row =
 	[
 		UserId = id,
 		Username = string,
-		FirstName = string,
-		LastName = string,
 	]
 
 val getAll : transaction (list $row)

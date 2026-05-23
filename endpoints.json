@@ -1,9 +1,12 @@
 {"endpoints":
- [{"method": "GET", "url": "/app.DA39A3EE5E6B4B0D3255BFEF95601890AFD80709.js", "content-type": 
+ [{"method": "GET", "url": "/app.914BE4FE7089F36FC5BE4CA1D777825973BDED6E.js", "content-type": 
    "text/javascript"},
-                      
+                      {"method": "GET", "url": "", "content-type": null},
+                                                                         
    {"method": "GET", "url": "Main/gitRev", "content-type": null},
                                                                  
    {"method": "GET", "url": "Main/hello", "content-type": null},
                                                                 
-   {"method": "GET", "url": "", "content-type": null}]}
+   {"method": "GET", "url": "Main/users", "content-type": null},
+                                                                
+   {"method": "POST", "url": "User/getAll", "content-type": null}]}

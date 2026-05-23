@@ -1,0 +1,4 @@
+CREATE TABLE User_tbl (
+	UserId integer NOT NULL PRIMARY KEY,
+	Username text NOT NULL COLLATE NOCASE UNIQUE
+);

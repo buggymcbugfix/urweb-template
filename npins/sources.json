@@ -15,9 +15,9 @@
       },
       "branch": "nix",
       "submodules": false,
-      "revision": "ec3db7f3e8cd96ebc6ad57c1afbee953698495f4",
-      "url": "https://github.com/buggymcbugfix/urweb/archive/ec3db7f3e8cd96ebc6ad57c1afbee953698495f4.tar.gz",
-      "hash": "0rqib9lif98rzdqm41dzvxrim9wz073kpl5i3n521pwy1dhxfm6z"
+      "revision": "710d6d29e1fa74b77399f5f76c80f4b20efdad9c",
+      "url": "https://github.com/buggymcbugfix/urweb/archive/710d6d29e1fa74b77399f5f76c80f4b20efdad9c.tar.gz",
+      "hash": "1q99cipciw5h9rmr3fa2851mxjf183j1n4my59h60aa9rwnp7jkv"
     },
     "urweb-curl": {
       "type": "Git",

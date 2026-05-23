@@ -6,8 +6,6 @@ con row =
 	[
 		UserId = id,
 		Username = string,
-		FirstName = string,
-		LastName = string,
 	]
 
 table tbl :
