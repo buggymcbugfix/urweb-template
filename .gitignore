@@ -1,2 +1,6 @@
 result
 .direnv
+*.db
+*.db-shm
+*.db-wal
+*.exe
