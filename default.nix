@@ -17,12 +17,9 @@ let
           # Not using pinned urweb Nixpkgs
           pkgs = final;
         };
-        urweb-curl = final.callPackage sources.urweb-curl { };
 
-        urweb-with-deps = final.urweb.withLibraries {
-          inherit (final)
-            urweb-curl
-            ;
+        urweb-with-libs = final.urweb.withLibraries {
+          urweb-curl = final.callPackage sources.urweb-curl { };
         };
 
         mlton = prev.mlton.overrideAttrs (old: {
@@ -42,19 +39,22 @@ let
     config = { };
     overlays = [ overlay ];
   };
+
 in
 pkgs.myPackages.build
 // {
   shell = pkgs.mkShell {
     inputsFrom = [ pkgs.myPackages.build ];
     packages = with pkgs; [
+      fswatch
+      nixfmt-tree
       npins
       sqlite-interactive
-      urweb-with-deps
+      xdg-utils
     ];
     shellHook = ''
-      # set -o pipefail
       set -eu
+      
       pid=""
       port=""
       status=""
@@ -63,7 +63,7 @@ pkgs.myPackages.build
 
       ,stop() {
         if [ -n "$pid" ]; then
-          printf 'Killing process %s... ' "$pid"
+          printf 'Shutting down server process %s... ' "$pid"
           if kill "$pid" 2>/dev/null; then
             wait "$pid" 2>/dev/null
             printf "${GREEN}ok${RESET}\n"
@@ -79,17 +79,13 @@ pkgs.myPackages.build
         ,stop
         rm -f "$logfile"
       }
-      
+
       trap cleanup EXIT INT TERM
 
       ,build() {
         printf "Building main.exe... "
-        ${pkgs.urweb-with-deps}/bin/urweb-with-libs main -dbms sqlite -db "$testDb" -endpoints endpoints.json \
+        urweb main -dbms sqlite -db "$testDb" -endpoints endpoints.json \
           && printf "${GREEN}ok${RESET}\n"
-      }
-
-      ,b() {
-        ,build
       }
 
       ,db() {
@@ -119,6 +115,7 @@ pkgs.myPackages.build
           printf 'pid = %s\n' "$pid"
           printf 'port = %s\n' "$port"
           printf "Logging to '$logfile'\n"
+          printf 'http://localhost:%s' "$port"
         else
           printf "${RED}main.exe failed to start${RESET}\n" >&2
           return
@@ -127,26 +124,27 @@ pkgs.myPackages.build
 
       ,go() {
         ,run
-        url="http://localhost:$port"
-        case "$(uname -s)" in
-          Darwin) open "$url" ;;
-          Linux)  xdg-open "$url" ;;
-          *) printf '%s not supported\n' "$(uname -s)" ;;
-        esac
+        xdg-open "http://localhost:$port"
+        
       }
 
       ,help() {
-        printf ',b / ,build   Build the application.\n'
+        printf ',build        Build the application.\n'
         printf ',db           Launch the sqlite3 cli for the test database.\n'
         printf ',db-recreate  Recreate the test database.\n'
         printf ',go           Run the application and launch browser.\n'
         printf ',run          Run the application.\n'
         printf ',stop         Kill the running background server.\n'
+        printf ',watch        Rebuild and rerun the server on change of Ur/Web files.\n'
       }
 
-      help() {
-        ,help
+      ,watch() {
+        ,build && ,run
+        while read -r _; do
+          ,build && ,run
+        done < <(fswatch -o -r -l 0.3 -e '.*' -i '\.ur$' -i '\.urs$' -i '\.urp$' .)
       }
+
       set +eu
     '';
   };

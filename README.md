@@ -1,23 +1,93 @@
-- For development: `nix-shell` or https://github.com/direnv/direnv
-- For building: `nix-build` (build defined in ./package.nix)
-- Building other packages: `nix-build -A myPackages.<TAB>`
+- Building other packages: 
 - Updating dependencies: `npins update`
 - For flake-users: https://github.com/NixOS/flake-compat
 
+# Building
+
+The build process for this web app is defined in [package.nix](./package.nix). All you need to do is run this command:
+
+~~~
+nix-build
+~~~
+
+TODO.
+
+## Dependencies
+TODO.
+
+### Building
+`nix-build -A myPackages.<TAB>`
+TODO.
+
+### Updating Dependencies
+TODO.
 
 # Development
 
-```
+When you run `nix-shell`, you get a bash prompt with *development commands*.
+These begin with `,`.
+
+~~~
+nix-shell
+,go   # opens the app in your browser
+,help # lists available development commands
+~~~
+
+The development commands are carefully designed to be well-behaved. Whenever you close or exit the shell, all resources are cleaned up.
+
+<details>
+<summary>
+
+## Development Command Reference
+</summary>
+
+### `,build`
+Builds the app.
+
+### `,db`
+Launches the SQLite command-line-interface for the test database.
+
+### `,db-recreate`
+Recreates the DB from scratch, wiping all existing data.
+
+### `,go`
+Calls `,run` and opens the app in your browser. 
+
+### `,help`
+Prints a summary of available development commands.
+
+### `,run`
+Runs the server, such that it listens on the first available port between 8000 and 9000, sending logs to a logfile.
+
+Automatically does the following:
+
+- if not already available, builds the server executable via `,build`
+- if not already available, creates the database via `,db-recreate`
+
+To rebuild the server, run `,build` again.
+
+</details>
+
+<details>
+<summary>
+
+## 
+</summary>
+~~~
 nix-shell --pure
-```
+~~~
+</details>
 
 
-# TODO
+# Backstory
 
-- Npins version 5 vs 7: nix-shell?
-- Fix mlton
-- nix formatter
-- `________placeholder_for_git_hash________`
-- shellHook works weird with direnv
-- urweb-with-libs vs urweb-with-deps
-- xdg-open
+## How this template was set up
+
+~~~
+# we need the npins version to match 
+nix-shell -p npins -I nixpkgs=channel:nixos-25.11
+npins init --bare
+npins add channel nixos-25.11 --name nixpkgs
+npins add github buggymcbugfix urweb --branch nix
+npins add github buggymcbugfix urweb-curl --branch master # uses release tags by default
+~~~

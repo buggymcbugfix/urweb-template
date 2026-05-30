@@ -3,8 +3,8 @@
     "nixpkgs": {
       "type": "Channel",
       "name": "nixos-25.11",
-      "url": "https://releases.nixos.org/nixos/25.11/nixos-25.11.11112.687f05a9184c/nixexprs.tar.xz",
-      "hash": "04nacgh0gcm5l9zdi09l4s966zampxqqvlfx2nvv4w541405nc5r"
+      "url": "https://releases.nixos.org/nixos/25.11/nixos-25.11.11422.25f538306313/nixexprs.tar.xz",
+      "hash": "16r660pwpfcrn8c4big4w9sz148lwrj2sj8w7i42r250b4n3sbqb"
     },
     "urweb": {
       "type": "Git",
@@ -15,9 +15,9 @@
       },
       "branch": "nix",
       "submodules": false,
-      "revision": "710d6d29e1fa74b77399f5f76c80f4b20efdad9c",
-      "url": "https://github.com/buggymcbugfix/urweb/archive/710d6d29e1fa74b77399f5f76c80f4b20efdad9c.tar.gz",
-      "hash": "1q99cipciw5h9rmr3fa2851mxjf183j1n4my59h60aa9rwnp7jkv"
+      "revision": "847af5cffaaefdfc3e38fa3e8d160028636570ee",
+      "url": "https://github.com/buggymcbugfix/urweb/archive/847af5cffaaefdfc3e38fa3e8d160028636570ee.tar.gz",
+      "hash": "00aqwsrphzjfpxdh320m2vdr73pk3ar6k69b2bil8aplrxf8ikkx"
     },
     "urweb-curl": {
       "type": "Git",
@@ -28,10 +28,10 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "c7e7c5beed2f6caf77e0c947c0b3713a02b7120a",
-      "url": "https://github.com/buggymcbugfix/urweb-curl/archive/c7e7c5beed2f6caf77e0c947c0b3713a02b7120a.tar.gz",
-      "hash": "sha256-IN2V7VPK/60q2Rt8jG0Kk/nrvovPOp9Sn6oUqFj4VQY="
+      "revision": "0b85e13d5908e21677391f5cf12316f2788f8fa8",
+      "url": "https://github.com/buggymcbugfix/urweb-curl/archive/0b85e13d5908e21677391f5cf12316f2788f8fa8.tar.gz",
+      "hash": "1f5vqyj84ciqaaa6gx98ld71n1ykxg7vivvbd8miks2xfs5g14sn"
     }
   },
-  "version": 7
+  "version": 5
 }
