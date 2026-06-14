@@ -24,16 +24,23 @@ TODO.
 
 # Development
 
-When you run `nix-shell`, you get a bash prompt with *development commands*.
-These begin with `,`.
+To develop the app, when you run `nix-shell` in your terminal,
+you get a bash prompt with *development commands* for building and launching
+the application, including the database. Nix takes care of setting up all
+necessary dependencies with precisely defined versions. To exit the Nix shell,
+run `exit` or hit `ctrl-d`.
+
+**Development commands** begin with `,`. Example workflow
 
 ~~~
 nix-shell
-,go   # opens the app in your browser
-,help # lists available development commands
+,go    # build the app and open it in your browser
+,help  # list available development commands
+,run   # rebuild the app and launch it (any previous instance gets killed)
 ~~~
 
-The development commands are carefully designed to be well-behaved. Whenever you close or exit the shell, all resources are cleaned up.
+The development commands are carefully designed to be well-behaved.
+Whenever you close or exit the Nix shell, all resources are cleaned up.
 
 <details>
 <summary>
@@ -61,21 +68,9 @@ Runs the server, such that it listens on the first available port between 8000 a
 
 Automatically does the following:
 
-- if not already available, builds the server executable via `,build`
+- (re)builds the server executable via `,build`
 - if not already available, creates the database via `,db-recreate`
 
-To rebuild the server, run `,build` again.
-
-</details>
-
-<details>
-<summary>
-
-## 
-</summary>
-~~~
-nix-shell --pure
-~~~
 </details>
 
 

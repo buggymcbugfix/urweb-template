@@ -99,9 +99,7 @@ pkgs.myPackages.build
       }
 
       ,run() {
-        if [ ! -x main.exe ]; then
-          ,build
-        fi
+        ,build
         ,stop
         if [ ! -f $testDb ]; then
           ,db-recreate
@@ -115,7 +113,7 @@ pkgs.myPackages.build
           printf 'pid = %s\n' "$pid"
           printf 'port = %s\n' "$port"
           printf "Logging to '$logfile'\n"
-          printf 'http://localhost:%s' "$port"
+          printf 'http://localhost:%s\n' "$port"
         else
           printf "${RED}main.exe failed to start${RESET}\n" >&2
           return
@@ -139,9 +137,9 @@ pkgs.myPackages.build
       }
 
       ,watch() {
-        ,build && ,run
+        ,run
         while read -r _; do
-          ,build && ,run
+          ,run
         done < <(fswatch -o -r -l 0.3 -e '.*' -i '\.ur$' -i '\.urs$' -i '\.urp$' .)
       }
 
