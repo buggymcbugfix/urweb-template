@@ -23,17 +23,24 @@ fun groupThousands (sep : string) (s : string) : string =
    `thousandsSep` is inserted every 3 digits of the integer part ("" to disable). *)
 val intToDecimal (thousandsSep : string) (decimalPoint : string) (decimalPlaces : int) (n : int) : string =
 	let
-		val str = show n
+		val (str, isNegative) =
+			case String.split (show n) #"-" of
+			| None => (show n, False)
+			| Some (_, str) => (str, True)
+
 		val len = strlen str
-	in
-		if decimalPlaces <= 0 then
-			groupThousands thousandsSep str
-		else if len <= decimalPlaces then
-			"0" ^ decimalPoint ^ padLeft decimalPlaces str
-		else
-			groupThousands thousandsSep (String.substring str {Start = 0, Len = (len - decimalPlaces)})
-				^ decimalPoint
-				^ String.substring str {Start = (len - decimalPlaces), Len = decimalPlaces}
+
+		val absResultStr =
+			if decimalPlaces <= 0 then
+				groupThousands thousandsSep str
+			else if len <= decimalPlaces then
+				"0" ^ decimalPoint ^ padLeft decimalPlaces str
+			else
+				groupThousands thousandsSep (String.substring str {Start = 0, Len = (len - decimalPlaces)})
+					^ decimalPoint
+					^ String.substring str {Start = (len - decimalPlaces), Len = decimalPlaces}
+		in
+			if isNegative then "-" ^ absResultStr else absResultStr
 	end
 
 val fmt m =
