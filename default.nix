@@ -2,6 +2,7 @@ let
   sources = import ./npins;
   RED = "\\033[31m";
   GREEN = "\\033[32m";
+  BOLD = "\\033[1m";
   RESET = "\\033[0m";
 in
 {
@@ -54,12 +55,12 @@ pkgs.myPackages.build
     ];
     shellHook = ''
       set -eu
-      
+
       pid=""
       port=""
       status=""
       logfile="$(mktemp)"
-      testDb='test.db'
+      testDb='db/test.db'
 
       ,stop() {
         if [ -n "$pid" ]; then
@@ -95,35 +96,41 @@ pkgs.myPackages.build
       ,db-recreate() {
         printf "Recreating DB at '%s'\n" "$testDb"
         rm -f "$testDb" "$testDb"-shm "$testDb"-wal
+        printf "Slurping ${BOLD}db/generated.sql${RESET}...\n"
         sqlite3 "$testDb" < db/generated.sql
+        printf "Slurping ${BOLD}db/triggers.sql${RESET}...\n"
+        sqlite3 "$testDb" < db/triggers.sql
+        printf "Slurping ${BOLD}db/test-data.sql${RESET}...\n"
+        sqlite3 "$testDb" < db/test-data.sql
       }
 
       ,run() {
-        ,build
-        ,stop
-        if [ ! -f $testDb ]; then
-          ,db-recreate
-        fi
-        printf 'Launching app...\n'
-        printf '**********************************************************************\n' >>"$logfile"
-        date +"%Y-%m-%d %H:%M:%S" >>"$logfile"
-        printf '**********************************************************************\n' >>"$logfile"
-        eval "$(./main.exe -a 127.0.0.1 -p 8000 -P 9000 -d3 3>&1 1>>"$logfile" 2>>"$logfile")"
-        if [ "$status" = 'OK' ]; then
-          printf 'pid = %s\n' "$pid"
-          printf 'port = %s\n' "$port"
-          printf "Logging to '$logfile'\n"
-          printf 'http://localhost:%s\n' "$port"
+        if ,build; then
+          ,stop
+          if [ ! -f $testDb ]; then
+            ,db-recreate
+          fi
+          printf 'Launching app...\n'
+          printf '**********************************************************************\n' >>"$logfile"
+          date +"%Y-%m-%d %H:%M:%S" >>"$logfile"
+          printf '**********************************************************************\n' >>"$logfile"
+          eval "$(./main.exe -a 127.0.0.1 -p 8000 -P 9000 -d3 3>&1 1>>"$logfile" 2>>"$logfile")"
+          if [ "$status" = 'OK' ]; then
+            printf 'pid = %s\n' "$pid"
+            printf 'port = %s\n' "$port"
+            printf "Logging to '$logfile'\n"
+            printf 'http://localhost:%s\n' "$port"
+          else
+            printf "${RED}main.exe failed to start${RESET}\n" >&2
+            return
+          fi
         else
-          printf "${RED}main.exe failed to start${RESET}\n" >&2
-          return
+          return 1
         fi
       }
 
       ,go() {
-        ,run
-        xdg-open "http://localhost:$port"
-        
+        ,run && xdg-open "http://localhost:$port"
       }
 
       ,help() {
