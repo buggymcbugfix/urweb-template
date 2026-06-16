@@ -2,14 +2,18 @@
  [{"method": "GET", "url": "/runtime.678742345B8E282393A78F7E3E4433E00FABF9F2.js", "content-type": 
    "text/javascript"},
                       
-   {"method": "GET", "url": "/app.E9296F0BDF67BB20D258F9B40584EACFD3D10990.js", "content-type": 
+   {"method": "GET", "url": "/app.FBBD6031EA5421438B28289D2C8C69E894F7CE68.js", "content-type": 
     "text/javascript"},
                        {"method": "GET", "url": "", "content-type": null},
                                                                           
+   {"method": "GET", "url": "Main/myTransactions", "content-type": null},
+                                                                         
    {"method": "GET", "url": "Main/gitRev", "content-type": null},
                                                                  
    {"method": "GET", "url": "Main/hello", "content-type": null},
                                                                 
    {"method": "GET", "url": "Main/users", "content-type": null},
                                                                 
+   {"method": "GET", "url": "Money/testPage", "content-type": null},
+                                                                    
    {"method": "POST", "url": "User/getAll", "content-type": null}]}
