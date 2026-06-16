@@ -2,6 +2,8 @@ type id = int
 
 val show_id = show_int
 
+val sql_id = sql_int
+
 con row =
 	[
 		UserId = id,
