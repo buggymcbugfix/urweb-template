@@ -13,11 +13,11 @@
         "owner": "buggymcbugfix",
         "repo": "urweb"
       },
-      "branch": "nix",
+      "branch": "main",
       "submodules": false,
-      "revision": "847af5cffaaefdfc3e38fa3e8d160028636570ee",
-      "url": "https://github.com/buggymcbugfix/urweb/archive/847af5cffaaefdfc3e38fa3e8d160028636570ee.tar.gz",
-      "hash": "00aqwsrphzjfpxdh320m2vdr73pk3ar6k69b2bil8aplrxf8ikkx"
+      "revision": "0ac483b46d58238ffcd8415e86df2d70e8c38bdd",
+      "url": "https://github.com/buggymcbugfix/urweb/archive/0ac483b46d58238ffcd8415e86df2d70e8c38bdd.tar.gz",
+      "hash": "0nv9whza716373mw7z8frcgzg0rjpg9rly7iyz0z3xiiavlsfsn5"
     },
     "urweb-curl": {
       "type": "Git",
