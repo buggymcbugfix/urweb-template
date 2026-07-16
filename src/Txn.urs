@@ -1,4 +1,5 @@
-type id
+(* The transaction sequence for a given user *)
+type userSeq
 
 datatype category =
 	| RegularPocketMoney
@@ -13,7 +14,7 @@ val read_category : read category
 con row =
 	[
 		UserId      = User.id,
-		TxnSeq       = id,
+		TxnUserSeq  = userSeq,
 		Timestamp   = time,
 		Delta       = Money.ty,
 		Balance     = Money.ty,
@@ -22,7 +23,7 @@ con row =
 	]
 
 table tbl : row
-	PRIMARY KEY (UserId, TxnSeq),
+	PRIMARY KEY (UserId, TxnUserSeq),
 	CONSTRAINT Fk_UserId FOREIGN KEY UserId REFERENCES {{User.tbl}}(UserId)
 
 val getForUser :
@@ -31,7 +32,7 @@ val getForUser :
 		(
 			list
 				$[
-					TxnSeq       = id,
+					TxnUserSeq  = userSeq,
 					Timestamp   = time,
 					Delta       = Money.ty,
 					Balance     = Money.ty,

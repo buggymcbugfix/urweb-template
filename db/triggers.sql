@@ -1,14 +1,14 @@
-CREATE TRIGGER Txn_tbl_validate_TxnSeq
+CREATE TRIGGER Txn_tbl_validate_TxnUserSeq
 BEFORE INSERT ON Txn_tbl
 WHEN
-		NEW.TxnSeq
+		NEW.TxnUserSeq
 	<>
 		COALESCE(
-			(SELECT MAX(TxnSeq) + 1 FROM Txn_tbl WHERE UserId = NEW.UserId),
+			(SELECT MAX(TxnUserSeq) + 1 FROM Txn_tbl WHERE UserId = NEW.UserId),
 			1
 		)
 BEGIN
-	SELECT RAISE(ABORT, 'invalid TxnSeq sequence: ' || NEW.TxnSeq);
+	SELECT RAISE(ABORT, 'invalid TxnUserSeq sequence: ' || NEW.TxnUserSeq);
 END;
 
 CREATE TRIGGER Txn_tbl_validate_Balance
@@ -17,9 +17,20 @@ FOR EACH ROW
 WHEN
 		NEW.Balance - NEW.Delta
 	<>
-		(SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnSeq = NEW.TxnSeq - 1)
+		(SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1)
 BEGIN
-	SELECT RAISE(ABORT, 'NEW.Balance - NEW.Delta does not match previous balance');
+	SELECT RAISE(ABORT, 'NEW.Balance (' || NEW.Balance || ') - NEW.Delta (' || NEW.Delta || ') does not match previous balance (' || (SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) || ')');
+END;
+
+CREATE TRIGGER Txn_tbl_arrow_of_time
+BEFORE INSERT ON Txn_tbl
+FOR EACH ROW
+WHEN
+		NEW.Timestamp
+	<
+		(SELECT Timestamp FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1)
+BEGIN
+	SELECT RAISE(ABORT, 'NEW.Timestamp (' || NEW.Timestamp || ') is before previous transaction''s timestamp (' || (SELECT Timestamp FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) || ')');
 END;
 
 CREATE TRIGGER Txn_tbl_no_update
