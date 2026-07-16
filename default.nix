@@ -23,7 +23,7 @@ let
           urweb-curl = final.callPackage sources.urweb-curl { };
         };
 
-        mlton = prev.mlton.overrideAttrs (old: {
+        mlton20210117 = prev.mlton20210117.overrideAttrs (old: {
           doCheck = false; # borked tests, take AGES to run
         });
 
