@@ -1,5 +1,3 @@
-open Utils
-
 val gitRev = return <xml><body>@GIT_REV@</body></xml>
 
 val hello name = return <xml><body>Hello, {[name]}!</body></xml>
