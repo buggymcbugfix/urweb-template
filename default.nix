@@ -59,7 +59,7 @@ pkgs.myPackages.build
       pid=""
       port=""
       status=""
-      logfile="$(mktemp)"
+      logfiles=()
       testDb='db/test.db'
 
       ,stop() {
@@ -77,14 +77,14 @@ pkgs.myPackages.build
       }
 
       cleanup() {
+        rm -f "''${logfiles[@]}"
         ,stop
-        rm -f "$logfile"
       }
 
       trap cleanup EXIT INT TERM
 
       ,build() {
-        printf "Building main.exe... "
+        printf "Building main.exe...\n"
         urweb main -dbms sqlite -db "$testDb" -endpoints endpoints.json \
           && printf "${GREEN}ok${RESET}\n"
       }
@@ -110,10 +110,10 @@ pkgs.myPackages.build
           if [ ! -f $testDb ]; then
             ,db-recreate
           fi
+          logfile="$(mktemp)"
+          logfiles+=("$logfile")
           printf 'Launching app...\n'
-          printf '**********************************************************************\n' >>"$logfile"
           date +"%Y-%m-%d %H:%M:%S" >>"$logfile"
-          printf '**********************************************************************\n' >>"$logfile"
           eval "$(./main.exe -a 127.0.0.1 -p 8000 -P 9000 -d3 3>&1 1>>"$logfile" 2>>"$logfile")"
           if [ "$status" = 'OK' ]; then
             printf 'pid = %s\n' "$pid"
@@ -122,6 +122,7 @@ pkgs.myPackages.build
             printf 'http://localhost:%s\n' "$port"
           else
             printf "${RED}main.exe failed to start${RESET}\n" >&2
+            cat "$logfile"
             return
           fi
         else
