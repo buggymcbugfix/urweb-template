@@ -1,5 +1,5 @@
 CREATE TABLE Txn_tbl(
-	TxnSeq integer NOT NULL,
+	TxnUserSeq integer NOT NULL,
 	Timestamp text NOT NULL,
 	UserId integer NOT NULL,
 	Delta integer NOT NULL,
