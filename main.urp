@@ -2,6 +2,9 @@ rewrite url Main/index
 allow env GIT_REV
 sql db/generated.sql
 noMangleSql
+file /css/main.css css/main.css text/css
+allow url /css/*
+timeFormat %Y-%m-%d # %H:%M:%S %a
 
 $/list
 $/string

@@ -10,21 +10,7 @@ datatype category =
 	| TransferOut (* e.g. I bought something for kiddo *)
 	| TransferIn (* e.g. kiddo paid for something for dad *)
 
-(* val show_category = Utils.deriveShow [category] *)
 val show_category = mkShow (fn (x : category) => unsafeSerializedToString (serialize x))
-
-(* val read_category : read category =
-	mkRead'
-		(
-			fn str =>
-				case str of
-				| "RegularPocketMoney" => Some RegularPocketMoney
-				| "Bonus" => Some Bonus
-				| "Withdrawal" => Some Withdrawal
-				| "Fine" => Some Fine
-				| _ => None
-		)
-		"category" *)
 
 con row =
 	[

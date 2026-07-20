@@ -12,5 +12,6 @@ INSERT INTO Txn_tbl
 	(         1 , CURRENT_TIMESTAMP ,      1 ,  10000 ,   10000 , 'Adjustment' , 'Opening balance'     ),
 	(         2 , CURRENT_TIMESTAMP ,      1 ,   1000 ,   11000 , 'Bonus'      , 'Chores'              ),
 	(         3 , CURRENT_TIMESTAMP ,      1 , -  395 ,   10605 , 'Withdrawal' , 'Wants to buy a comic'),
-	(         4 , CURRENT_TIMESTAMP ,      1 , -    2 ,   10603 , 'Fine'       , 'Language (2 ×)'      )
+	(         1 , CURRENT_TIMESTAMP ,      2 ,   1000 ,    1000 , 'Adjustment' , 'Opening balance'     ),
+	(         1 , CURRENT_TIMESTAMP ,      3 ,   1000 ,    1000 , 'Adjustment' , 'Opening balance'     )
 ;

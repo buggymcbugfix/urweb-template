@@ -1,5 +1,5 @@
 type ty
 
-val fmt : ty -> string
+val show_ty : show ty
 
 val testPage : transaction page
