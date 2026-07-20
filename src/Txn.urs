@@ -2,14 +2,18 @@
 type userSeq
 
 datatype category =
-	| RegularPocketMoney
-	| Bonus
-	| Withdrawal
-	| Fine
+	| PocketMoney (* regular pocket money *)
+	| Bonus (* kiddo went above and beyond and earned themselves some extra bees *)
+	| Withdrawal (* cash taken out, e.g. "dad give me 5, no not that, money. i want to buy something from the shop." *)
+	| Deposit (* cash paid in *)
+	| Fine (* kiddo wilfully did something they knew they shouldn't have and I want to dissuade them from repeating *)
+	| Adjustment (* e.g. for opening balance or when we made a mistake somewhere *)
+	| TransferOut (* e.g. dad bought something *)
+	| TransferIn (* e.g. paid for something for dad *)
 
 val show_category : show category
 
-val read_category : read category
+(* val read_category : read category *)
 
 con row =
 	[
