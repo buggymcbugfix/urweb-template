@@ -10,3 +10,5 @@ val fetchInto [a] (src : source a) (txn : transaction a) =
 			return <xml/>
 		}/>
 	</xml>
+
+(* val deriveShow [t :: Type] = mkShow (fn (x : t) => unsafeSerializedToString (serialize x)) *)

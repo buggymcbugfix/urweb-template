@@ -1,16 +1,13 @@
 {"endpoints":
- [{"method": "GET", "url": "/app.A2DEC8CE9425D7594DA2186549BE571BFC522451.js", "content-type": 
+ [{"method": "GET", "url": "/app.DA39A3EE5E6B4B0D3255BFEF95601890AFD80709.js", "content-type": 
    "text/javascript"},
-                      {"method": "GET", "url": "", "content-type": null},
+                      
+   {"method": "GET", "url": "/css/main.css", "content-type": "text/css"},
                                                                          
-   {"method": "GET", "url": "Main/myTransactions", "content-type": null},
-                                                                         
-   {"method": "GET", "url": "Main/gitRev", "content-type": null},
-                                                                 
+   {"method": "GET", "url": "", "content-type": null},
+                                                      
    {"method": "GET", "url": "Main/hello", "content-type": null},
                                                                 
    {"method": "GET", "url": "Main/users", "content-type": null},
                                                                 
-   {"method": "GET", "url": "Money/testPage", "content-type": null},
-                                                                    
-   {"method": "POST", "url": "User/getAll", "content-type": null}]}
+   {"method": "GET", "url": "Main/myTransactions", "content-type": null}]}

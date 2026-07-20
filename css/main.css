@@ -1,0 +1,30 @@
+:root {
+	--main-color: oklch(57.061% 0.23055 299.58);
+	--underline-color: color-mix(in oklch, white 55%, var(--main-color));
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	font-weight: 300;
+	font-family: 'Avenir', 'Futura', 'League Spartan', sans-serif;
+}
+
+table {
+	border: none;
+	border-collapse: collapse;
+}
+
+th, td {
+	border:1pt solid var(--underline-color);
+	padding: 1ex .5em;
+}
+
+th {
+	font-weight: 500;
+	background-color: color-mix(in oklch, white 85%, var(--main-color));
+}

@@ -49,11 +49,13 @@ val fmt m =
 
 		val symbol = Config.currencySymbol
 	in
-		if Config.currencySymbolThenAmount then
+		if Config.currencySymbolBeforeAmount then
 			symbol ^ " " ^ amt
 		else
 			amt ^ " " ^ symbol
 	end
+
+val show_ty = mkShow (fn ty => fmt ty)
 
 val testPage =
 	srcN <- source "";

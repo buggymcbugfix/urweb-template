@@ -13,8 +13,6 @@ datatype category =
 
 val show_category : show category
 
-(* val read_category : read category *)
-
 con row =
 	[
 		UserId      = User.id,
