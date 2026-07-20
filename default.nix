@@ -1,5 +1,8 @@
 let
   sources = import ./npins;
+
+  CMD_PREFIX = ",";
+
   RED = "\\033[31m";
   GREEN = "\\033[32m";
   BOLD = "\\033[1m";
@@ -62,9 +65,9 @@ pkgs.myPackages.build
       logfiles=()
       testDb='db/test.db'
 
-      ,stop() {
+      ${CMD_PREFIX}stop() {
         if [ -n "$pid" ]; then
-          printf 'Shutting down server process %s... ' "$pid"
+          printf 'Shutting down server process %s...\n' "$pid"
           if kill "$pid" 2>/dev/null; then
             wait "$pid" 2>/dev/null
             printf "${GREEN}ok${RESET}\n"
@@ -78,22 +81,22 @@ pkgs.myPackages.build
 
       cleanup() {
         rm -f "''${logfiles[@]}"
-        ,stop
+        ${CMD_PREFIX}stop
       }
 
       trap cleanup EXIT INT TERM
 
-      ,build() {
+      ${CMD_PREFIX}build() {
         printf "Building main.exe...\n"
         urweb main -dbms sqlite -db "$testDb" -endpoints endpoints.json \
           && printf "${GREEN}ok${RESET}\n"
       }
 
-      ,db() {
+      ${CMD_PREFIX}db() {
         sqlite3 "$testDb" -cmd '.headers on' -cmd 'PRAGMA foreign_keys = ON' "$@"
       }
 
-      ,db-recreate() {
+      ${CMD_PREFIX}db-recreate() {
         printf "Recreating DB at '%s'\n" "$testDb"
         rm -f "$testDb" "$testDb"-shm "$testDb"-wal
         printf "Slurping ${BOLD}db/generated.sql${RESET}...\n"
@@ -104,11 +107,11 @@ pkgs.myPackages.build
         sqlite3 "$testDb" < db/test-data.sql
       }
 
-      ,run() {
-        if ,build; then
-          ,stop
+      ${CMD_PREFIX}run() {
+        if ${CMD_PREFIX}build; then
+          ${CMD_PREFIX}stop
           if [ ! -f $testDb ]; then
-            ,db-recreate
+            ${CMD_PREFIX}db-recreate
           fi
           logfile="$(mktemp)"
           logfiles+=("$logfile")
@@ -130,24 +133,24 @@ pkgs.myPackages.build
         fi
       }
 
-      ,go() {
-        ,run && xdg-open "http://localhost:$port"
+      ${CMD_PREFIX}go() {
+        ${CMD_PREFIX}run && xdg-open "http://localhost:$port"
       }
 
-      ,help() {
-        printf ',build        Build the application.\n'
-        printf ',db           Launch the sqlite3 cli for the test database.\n'
-        printf ',db-recreate  Recreate the test database.\n'
-        printf ',go           Run the application and launch browser.\n'
-        printf ',run          Run the application.\n'
-        printf ',stop         Kill the running background server.\n'
-        printf ',watch        Rebuild and rerun the server on change of Ur/Web files.\n'
+      ${CMD_PREFIX}help() {
+        printf '${CMD_PREFIX}build        Build the application.\n'
+        printf '${CMD_PREFIX}db           Launch the sqlite3 cli for the test database.\n'
+        printf '${CMD_PREFIX}db-recreate  Recreate the test database.\n'
+        printf '${CMD_PREFIX}go           Run the application and launch browser.\n'
+        printf '${CMD_PREFIX}run          Run the application.\n'
+        printf '${CMD_PREFIX}stop         Kill the running background server.\n'
+        printf '${CMD_PREFIX}watch        Rebuild and rerun the server on change of Ur/Web files.\n'
       }
 
-      ,watch() {
-        ,run
+      ${CMD_PREFIX}watch() {
+        ${CMD_PREFIX}run
         while read -r _; do
-          ,run
+          ${CMD_PREFIX}run
         done < <(fswatch -o -r -l 0.3 -e '.*' -i '\.ur$' -i '\.urs$' -i '\.urp$' .)
       }
 
