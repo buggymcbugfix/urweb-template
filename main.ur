@@ -1,8 +1,19 @@
-val gitRev =
-	rev <- getenv (blessEnvVar "GIT_REV");
-	return <xml><body>{[case rev of None => "unknown" | Some r => r]}</body></xml>
+style metadata
 
-val hello name = return <xml><body>Hello, {[name]}!</body></xml>
+val mkPage (x : xbody) =
+	rev <- getenv (blessEnvVar "GIT_REV");
+	return
+		<xml>
+			<head>
+				<link rel="stylesheet" type="text/css" href="/css/main.css"/>
+			</head>
+			<body>
+				{x}
+				<footer><span class={metadata}>{[rev]}</span></footer>
+			</body>
+		</xml>
+
+val hello name = mkPage <xml>Hello, {[name]}!</xml>
 
 val renderTransactionTr r =
 	<xml>
@@ -17,23 +28,18 @@ val renderTransactionTr r =
 
 val myTransactions userId =
 	txns <- Txn.getForUser userId;
-	return
+	mkPage
 		<xml>
-			<head>
-				<link rel="stylesheet" type="text/css" href="/css/main.css"/>
-			</head>
-			<body>
-				<table>
-					<tr>
-						<th>Date</th>
-						<th>Delta</th>
-						<th>Balance</th>
-						<th>Category</th>
-						<th>Description</th>
-					</tr>
-					{List.mapX renderTransactionTr txns}
-				</table>
-			</body>
+			<table>
+				<tr>
+					<th>Date</th>
+					<th>Delta</th>
+					<th>Balance</th>
+					<th>Category</th>
+					<th>Description</th>
+				</tr>
+				{List.mapX renderTransactionTr txns}
+			</table>
 		</xml>
 
 val renderUserRow r =
@@ -45,25 +51,20 @@ val renderUserRow r =
 
 val users =
 	(users : list $User.row) <- User.getAll;
-	return
+	mkPage
 		<xml>
-			<body>
-				<ul>
-					{List.mapX renderUserRow users}
-				</ul>
-			</body>
+			<ul>
+				{List.mapX renderUserRow users}
+			</ul>
 		</xml>
 
 val index =
-	return
+	mkPage
 		<xml>
-			<body>
-				<h1>Bank of Dad</h1>
-				<ul>
-					<li><a link={hello "World"}>hello world</a></li>
-					<li><a link={users}>list of all users</a></li>
-					(* <li><a link={myTransactions 1}>transactions for user 1</a></li> *)
-				</ul>
-				<span style="display:none">@GIT_REV@</span>
-			</body>
+			<h1>Bank of Dad</h1>
+			<ul>
+				<li><a link={hello "World"}>hello world</a></li>
+				<li><a link={users}>list of all users</a></li>
+			</ul>
+			<span style="display:none">@GIT_REV@</span>
 		</xml>

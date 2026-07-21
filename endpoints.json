@@ -1,8 +1,6 @@
 {"endpoints":
  [{"method": "GET", "url": "/css/main.css", "content-type": "text/css"},
                                                                         
-   {"method": "GET", "url": "Main/gitRev", "content-type": null},
-                                                                 
    {"method": "GET", "url": "", "content-type": null},
                                                       
    {"method": "GET", "url": "Main/hello", "content-type": null},

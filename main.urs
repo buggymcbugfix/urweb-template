@@ -1,5 +1,3 @@
-val gitRev : transaction page
-
 val hello : string -> transaction page
 
 val myTransactions : User.id -> transaction page
