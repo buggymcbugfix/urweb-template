@@ -18,7 +18,7 @@ val renderTransactionTr r =
 			<td>{[r.Timestamp]}</td>
 			<td>{[r.Delta]}</td>
 			<td>{[r.Balance]}</td>
-			<td>{[show (deserialize r.Category)]}</td>
+			<td>{[r.Category]}</td>
 			<td>{[r.Description]}</td>
 		</tr>
 	</xml>
