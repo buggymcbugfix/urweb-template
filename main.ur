@@ -18,7 +18,7 @@ val hello name = mkPage <xml>Hello, {[name]}!</xml>
 val renderTransactionTr r =
 	<xml>
 		<tr>
-			<td>{[r.Timestamp]}</td>
+			<td>{[r.EffectiveDate]}</td>
 			<td>{[r.Delta]}</td>
 			<td>{[r.Balance]}</td>
 			<td>{[r.Category]}</td>

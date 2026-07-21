@@ -14,13 +14,14 @@ val show_category = mkShow (fn (x : category) => unsafeSerializedToString (seria
 
 con row =
 	[
-		UserId      = User.id,
-		TxnUserSeq  = userSeq,
-		Timestamp   = time,
-		Delta       = Money.delta,
-		Balance     = Money.ty,
-		Category    = serialized category,
-		Description = string,
+		UserId        = User.id,
+		TxnUserSeq    = userSeq,
+		Timestamp     = time,
+		EffectiveDate = Date.ty,
+		Delta         = Money.delta,
+		Balance       = Money.ty,
+		Category      = serialized category,
+		Description   = string,
 	]
 
 table tbl : row
@@ -28,16 +29,10 @@ table tbl : row
 	CONSTRAINT Fk_UserId FOREIGN KEY UserId REFERENCES {{User.tbl}}(UserId)
 
 val getForUser userId =
-	queryL
+	queryL1
 		(
-			SELECT
-				T.TxnUserSeq AS TxnUserSeq,
-				T.Timestamp AS Timestamp,
-				T.Delta AS Delta,
-				T.Balance AS Balance,
-				T.Category AS Category,
-				T.Description AS Description
-			FROM tbl AS T
-			WHERE T.UserId = {[userId]}
-			ORDER BY T.Timestamp DESC
+			SELECT *
+			FROM tbl
+			WHERE tbl.UserId = {[userId]}
+			ORDER BY tbl.EffectiveDate, tbl.Timestamp DESC
 		)
