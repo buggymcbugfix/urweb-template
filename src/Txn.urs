@@ -18,7 +18,7 @@ con row =
 		UserId      = User.id,
 		TxnUserSeq  = userSeq,
 		Timestamp   = time,
-		Delta       = Money.ty,
+		Delta       = Money.delta,
 		Balance     = Money.ty,
 		Category    = serialized category,
 		Description = string,
@@ -36,7 +36,7 @@ val getForUser :
 				$[
 					TxnUserSeq  = userSeq,
 					Timestamp   = time,
-					Delta       = Money.ty,
+					Delta       = Money.delta,
 					Balance     = Money.ty,
 					Category    = serialized category,
 					Description = string,
