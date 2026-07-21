@@ -98,6 +98,8 @@ pkgs.myPackages.build
         rm -f "$testDb" "$testDb"-shm "$testDb"-wal
         printf "Slurping ${BOLD}db/generated.sql${RESET}...\n"
         sqlite3 "$testDb" < db/generated.sql
+        printf "Slurping ${BOLD}db/override.sql${RESET}...\n"
+        sqlite3 "$testDb" < db/override.sql
         printf "Slurping ${BOLD}db/triggers.sql${RESET}...\n"
         sqlite3 "$testDb" < db/triggers.sql
         printf "Slurping ${BOLD}db/test-data.sql${RESET}...\n"

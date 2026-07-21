@@ -8,10 +8,10 @@ INSERT INTO User_tbl
 ;
 
 INSERT INTO Txn_tbl
-	(TxnUserSeq , Timestamp         , UserId , Delta  , Balance , Category     , Description           ) VALUES
-	(         1 , CURRENT_TIMESTAMP ,      1 ,  10000 ,   10000 , 'Adjustment' , 'Opening balance'     ),
-	(         2 , CURRENT_TIMESTAMP ,      1 ,   1000 ,   11000 , 'Bonus'      , 'Chores'              ),
-	(         3 , CURRENT_TIMESTAMP ,      1 , -  395 ,   10605 , 'Withdrawal' , 'Wants to buy a comic'),
-	(         1 , CURRENT_TIMESTAMP ,      2 ,   1000 ,    1000 , 'Adjustment' , 'Opening balance'     ),
-	(         1 , CURRENT_TIMESTAMP ,      3 ,   1000 ,    1000 , 'Adjustment' , 'Opening balance'     )
+	(UserId , TxnUserSeq , EffectiveDate , Timestamp         , Delta  , Balance , Category     , Description           ) VALUES
+	(     1 ,          1 , '2026-06-01'  , CURRENT_TIMESTAMP ,  10000 ,   10000 , 'Adjustment' , 'Opening balance'     ),
+	(     1 ,          2 , '2026-06-02'  , CURRENT_TIMESTAMP ,   1000 ,   11000 , 'Bonus'      , 'Chores'              ),
+	(     1 ,          3 , '2026-06-03'  , CURRENT_TIMESTAMP , -  395 ,   10605 , 'Withdrawal' , 'Wants to buy a comic'),
+	(     2 ,          1 , '2026-06-01'  , CURRENT_TIMESTAMP ,   1000 ,    1000 , 'Adjustment' , 'Opening balance'     ),
+	(     3 ,          1 , '2026-06-01'  , CURRENT_TIMESTAMP ,   1000 ,    1000 , 'Adjustment' , 'Opening balance'     )
 ;

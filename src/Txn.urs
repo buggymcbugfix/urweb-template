@@ -15,30 +15,18 @@ val show_category : show category
 
 con row =
 	[
-		UserId      = User.id,
-		TxnUserSeq  = userSeq,
-		Timestamp   = time,
-		Delta       = Money.delta,
-		Balance     = Money.ty,
-		Category    = serialized category,
-		Description = string,
+		UserId        = User.id,
+		TxnUserSeq    = userSeq,
+		Timestamp     = time,
+		EffectiveDate = Date.ty,
+		Delta         = Money.delta,
+		Balance       = Money.ty,
+		Category      = serialized category,
+		Description   = string,
 	]
 
 table tbl : row
 	PRIMARY KEY (UserId, TxnUserSeq),
 	CONSTRAINT Fk_UserId FOREIGN KEY UserId REFERENCES {{User.tbl}}(UserId)
 
-val getForUser :
-	User.id ->
-	transaction
-		(
-			list
-				$[
-					TxnUserSeq  = userSeq,
-					Timestamp   = time,
-					Delta       = Money.delta,
-					Balance     = Money.ty,
-					Category    = serialized category,
-					Description = string,
-				]
-		)
+val getForUser : User.id -> transaction (list $row)

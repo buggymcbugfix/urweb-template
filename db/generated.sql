@@ -1,6 +1,9 @@
 PRAGMA foreign_keys = ON;
 PRAGMA journal_mode = WAL;
 
+CREATE TABLE date_faux(
+    today text NOT NULL);
+
 CREATE TABLE user_tbl(
     userid integer NOT NULL,
     username text NOT NULL,
@@ -11,6 +14,7 @@ CREATE TABLE txn_tbl(
     userid integer NOT NULL,
     txnuserseq integer NOT NULL,
     timestamp text NOT NULL,
+    effectivedate text NOT NULL,
     delta integer NOT NULL,
     balance integer NOT NULL,
     category text NOT NULL,
