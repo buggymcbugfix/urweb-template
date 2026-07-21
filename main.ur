@@ -27,9 +27,11 @@ val renderTransactionTr r =
 	</xml>
 
 val myTransactions userId =
+	user <- User.get userId;
 	txns <- Txn.getForUser userId;
 	mkPage
 		<xml>
+			<h1>Transactions for {[user.Username]}</h1>
 			<table>
 				<tr>
 					<th>Date</th>

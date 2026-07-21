@@ -14,3 +14,4 @@ table tbl :
 	CONSTRAINT Uq_Username UNIQUE Username
 
 val getAll = queryL1 (SELECT * FROM tbl ORDER BY tbl.Username)
+val get id = oneRow1 (SELECT * FROM tbl WHERE tbl.UserId = {[id]})

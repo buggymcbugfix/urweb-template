@@ -14,3 +14,4 @@ table tbl :
 	CONSTRAINT Uq_Username UNIQUE Username
 
 val getAll : transaction (list $row)
+val get : id -> transaction $row
