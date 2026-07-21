@@ -57,6 +57,10 @@ val fmt m =
 
 val show_ty = mkShow (fn ty => fmt ty)
 
+type delta = ty
+
+val show_delta = mkShow (fn ty => if ty < 0 then fmt ty else "+" ^ fmt ty)
+
 val testPage =
 	srcN <- source "";
 	return
