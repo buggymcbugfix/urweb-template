@@ -4,7 +4,7 @@ sql db/generated.sql
 noMangleSql
 file /css/main.css css/main.css text/css
 allow url /css/*
-timeFormat %Y-%m-%d # %H:%M:%S %a
+timeFormat %Y-%m-%d (%a) %H:%M:%S
 
 $/list
 $/string
@@ -14,4 +14,5 @@ src/Date
 src/User
 src/Money
 src/Txn
+src/PocketMoney
 main

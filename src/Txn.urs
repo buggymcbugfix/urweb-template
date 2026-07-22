@@ -30,3 +30,13 @@ table tbl : row
 	CONSTRAINT Fk_UserId FOREIGN KEY UserId REFERENCES {{User.tbl}}(UserId)
 
 val getForUser : User.id -> transaction (list $row)
+
+val create :
+	{
+		UserId        : User.id,
+		EffectiveDate : Date.ty,
+		Delta         : Money.delta,
+		Category      : category,
+		Description   : string,
+	}
+	-> transaction unit

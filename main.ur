@@ -18,7 +18,7 @@ val hello name = mkPage <xml>Hello, {[name]}!</xml>
 val renderTransactionTr r =
 	<xml>
 		<tr>
-			<td>{[r.EffectiveDate]}</td>
+			<td>{[timef "%Y-%m-%d (%a)" (Date.toTime r.EffectiveDate)]}</td>
 			<td>{[r.Delta]}</td>
 			<td>{[r.Balance]}</td>
 			<td>{[r.Category]}</td>
@@ -42,6 +42,7 @@ val myTransactions userId =
 				</tr>
 				{List.mapX renderTransactionTr txns}
 			</table>
+			<button onclick={fn _ => rpc (PocketMoney.collect userId)}>Collect</button>
 		</xml>
 
 val renderUserRow r =

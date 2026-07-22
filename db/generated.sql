@@ -25,3 +25,10 @@ CREATE TABLE Txn_tbl (
     CONSTRAINT Txn_tbl_Fk_UserId FOREIGN KEY (UserId) REFERENCES User_tbl (UserId)
 );
 
+CREATE TABLE PocketMoney_weeklyAmount (
+    UserId integer NOT NULL,
+    Amount integer NOT NULL,
+    Starting text NOT NULL,
+    CONSTRAINT PocketMoney_weeklyAmount_pkey PRIMARY KEY (UserId)
+);
+

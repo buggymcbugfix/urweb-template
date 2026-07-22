@@ -15,3 +15,8 @@ INSERT INTO Txn_tbl
 	(     2 ,          1 , '2026-06-01'  , CURRENT_TIMESTAMP ,   1000 ,    1000 , 'Adjustment' , 'Opening balance'     ),
 	(     3 ,          1 , '2026-06-01'  , CURRENT_TIMESTAMP ,   1000 ,    1000 , 'Adjustment' , 'Opening balance'     )
 ;
+
+INSERT INTO PocketMoney_weeklyAmount
+	(UserId, Amount, Starting    ) VALUES
+	(     1,    500, '2025-12-12')
+;

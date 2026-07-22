@@ -61,6 +61,10 @@ type delta = ty
 
 val show_delta = mkShow (fn ty => if ty < 0 then fmt ty else "+" ^ fmt ty)
 
+val applyDelta delta money = money + delta
+
+val toDelta m = m
+
 val testPage =
 	srcN <- source "";
 	return

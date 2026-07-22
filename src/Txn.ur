@@ -36,3 +36,23 @@ val getForUser userId =
 			WHERE tbl.UserId = {[userId]}
 			ORDER BY tbl.EffectiveDate, tbl.Timestamp DESC
 		)
+
+val create r =
+	latestTxn <- oneOrNoRows1 (SELECT tbl.TxnUserSeq, tbl.Balance FROM tbl WHERE tbl.UserId = {[r.UserId]});
+	case latestTxn of
+	| None => error <xml/>
+	| Some latestTxn =>
+		dml
+			(
+				insert tbl
+					{
+						UserId        = (SQL {[r.UserId]}),
+						TxnUserSeq    = (SQL {[latestTxn.TxnUserSeq + 1]}),
+						Timestamp     = (SQL CURRENT_TIMESTAMP),
+						EffectiveDate = (SQL {[r.EffectiveDate]}),
+						Delta         = (SQL {[r.Delta]}),
+						Balance       = (SQL {[Money.applyDelta r.Delta latestTxn.Balance]}),
+						Category      = (SQL {[serialize r.Category]}),
+						Description   = (SQL {[r.Description]})
+					}
+			)
