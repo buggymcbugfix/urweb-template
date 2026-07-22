@@ -40,7 +40,21 @@ val getForUser userId =
 val create r =
 	latestTxn <- oneOrNoRows1 (SELECT tbl.TxnUserSeq, tbl.Balance FROM tbl WHERE tbl.UserId = {[r.UserId]});
 	case latestTxn of
-	| None => error <xml/>
+	| None =>
+		dml
+			(
+				insert tbl
+					{
+						UserId        = (SQL {[r.UserId]}),
+						TxnUserSeq    = (SQL 1),
+						Timestamp     = (SQL CURRENT_TIMESTAMP),
+						EffectiveDate = (SQL {[r.EffectiveDate]}),
+						Delta         = (SQL {[r.Delta]}),
+						Balance       = (SQL {[Money.fromDelta r.Delta]}),
+						Category      = (SQL {[serialize r.Category]}),
+						Description   = (SQL {[r.Description]})
+					}
+			)
 	| Some latestTxn =>
 		dml
 			(
