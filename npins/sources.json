@@ -3,6 +3,7 @@
     "nixpkgs": {
       "type": "Channel",
       "name": "nixos-unstable",
+      "artifact": "nixexprs.tar.xz",
       "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1037713.241313f4e8e5/nixexprs.tar.xz",
       "hash": "sha256-WhdsTtaih3DgTPP/PX023b36UNQyMzEoi6GkPyGx0y4="
     },
@@ -15,8 +16,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "dc9e9a136c378961c0e82266aeedf8b451450293",
-      "hash": "sha256-O0g52p8/c19vaJ4qrpy33crfgoU1pNGxSWm6bm1+iFM="
+      "revision": "a351ee9d6c33ce747e93637031989d624cbd1b1b",
+      "url": "https://github.com/buggymcbugfix/urweb/archive/a351ee9d6c33ce747e93637031989d624cbd1b1b.tar.gz",
+      "hash": "sha256-z0cJSkldknGjRMTwg26rRw9YBCMyByFYlxpAt1UKKGU="
     },
     "urweb-curl": {
       "type": "Git",
@@ -28,8 +30,9 @@
       "branch": "master",
       "submodules": false,
       "revision": "0b85e13d5908e21677391f5cf12316f2788f8fa8",
+      "url": null,
       "hash": "sha256-VpPwinZd6BkramvvuM/r0wcbTqMo9WeUUjgygqTHu7g="
     }
   },
-  "version": 7
+  "version": 8
 }
