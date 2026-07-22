@@ -148,8 +148,10 @@ pkgs.myPackages.build
 
       ,watch() {
         ,run
+        printf '\n'
         while read -r _; do
           ,run
+          printf '\n'
         done < <(fswatch -o -r -l 0.3 -e '.*' -i '\.ur$' -i '\.urs$' -i '\.urp$' .)
       }
 
