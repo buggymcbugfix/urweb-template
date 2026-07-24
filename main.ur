@@ -30,6 +30,7 @@ val myTransactions userId =
 	PocketMoney.collect userId;
 	user <- User.get userId;
 	txns <- Txn.getForUser userId;
+	scTxns <- source txns;
 	mkPage
 		<xml>
 			<h1>Transactions for {[user.Username]}</h1>
@@ -41,7 +42,10 @@ val myTransactions userId =
 					<th>Category</th>
 					<th>Description</th>
 				</tr>
-				{List.mapX renderTransactionTr txns}
+				<dyn signal={
+					txns <- signal scTxns;
+					return (List.mapX renderTransactionTr txns)
+				}/>
 			</table>
 			(* <button onclick={fn _ => rpc (PocketMoney.collect userId)}>Collect</button> *)
 		</xml>
