@@ -17,16 +17,17 @@ val hello name = mkPage <xml>Hello, {[name]}!</xml>
 
 val renderTransactionTr r =
 	<xml>
-		<tr>
+		<tr class={if Money.Delta.isNegative r.Delta then Class.negative else Class.positive}>
 			<td>{[timef "%Y-%m-%d (%a)" (Date.toTime r.EffectiveDate)]}</td>
-			<td>{[r.Delta]}</td>
-			<td>{[r.Balance]}</td>
+			<td class={Class.right_aligned}>{[r.Delta]}</td>
+			<td class={Class.right_aligned}>{[r.Balance]}</td>
 			<td>{[r.Category]}</td>
 			<td>{[r.Description]}</td>
 		</tr>
 	</xml>
 
 val myTransactions userId =
+	PocketMoney.collect userId;
 	user <- User.get userId;
 	txns <- Txn.getForUser userId;
 	mkPage
@@ -42,7 +43,7 @@ val myTransactions userId =
 				</tr>
 				{List.mapX renderTransactionTr txns}
 			</table>
-			<button onclick={fn _ => rpc (PocketMoney.collect userId)}>Collect</button>
+			(* <button onclick={fn _ => rpc (PocketMoney.collect userId)}>Collect</button> *)
 		</xml>
 
 val renderUserRow r =

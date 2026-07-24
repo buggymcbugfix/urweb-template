@@ -1,18 +1,10 @@
 {"endpoints":
- [{"method": "GET", "url": "/runtime.678742345B8E282393A78F7E3E4433E00FABF9F2.js", "content-type": 
-   "text/javascript"},
-                      
-   {"method": "GET", "url": "/app.C98E180EFA6B0F325CF860DD9F067533D2BB71E2.js", "content-type": 
-    "text/javascript"},
-                       
-   {"method": "GET", "url": "/css/main.css", "content-type": "text/css"},
-                                                                         
+ [{"method": "GET", "url": "/css/main.css", "content-type": "text/css"},
+                                                                        
    {"method": "GET", "url": "", "content-type": null},
                                                       
    {"method": "GET", "url": "Main/hello", "content-type": null},
                                                                 
    {"method": "GET", "url": "Main/users", "content-type": null},
                                                                 
-   {"method": "GET", "url": "Main/myTransactions", "content-type": null},
-                                                                         
-   {"method": "POST", "url": "PocketMoney/collect", "content-type": null}]}
+   {"method": "GET", "url": "Main/myTransactions", "content-type": null}]}
