@@ -1,6 +1,7 @@
 TODOs
 =====
 
+- Input validation class
 - Add new transaction
 
 Done

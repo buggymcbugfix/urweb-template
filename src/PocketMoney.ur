@@ -15,7 +15,7 @@ val getLatestPocketMoneyTxn userId : transaction (option Date.ty) =
 				(
 					SELECT MAX(txn.EffectiveDate) AS LatestEffectiveDate
 					FROM txn
-					WHERE txn.Category = {[serialize Txn.PocketMoney]}
+					WHERE txn.Category = {[serialize Txn.Category.PocketMoney]}
 						AND txn.UserId = {[userId]}
 				);
 		case latest of
@@ -44,7 +44,7 @@ val collectNextFromGivenDate r =
 						UserId = r.UserId,
 						EffectiveDate = r.NextPayday,
 						Delta = Money.toDelta amt,
-						Category = Txn.PocketMoney,
+						Category = Txn.Category.PocketMoney,
 						Description = ""
 					};
 				return True
