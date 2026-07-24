@@ -57,15 +57,19 @@ val fmt m =
 
 val show_ty = mkShow (fn ty => fmt ty)
 
-type delta = ty
+structure Delta = struct
+	type t = int
 
-val show_delta = mkShow (fn ty => if ty < 0 then fmt ty else "+" ^ fmt ty)
+	val show = mkShow (fn ty => if ty < 0 then fmt ty else "+" ^ fmt ty)
 
-val applyDelta delta money = money + delta
+	val isNegative delta = delta < 0
+end
 
-val toDelta m = m
+	val applyDelta delta money = money + delta
 
-val fromDelta m = m
+	val toDelta m = m
+
+	val fromDelta m = m
 
 val testPage =
 	srcN <- source "";

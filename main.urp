@@ -4,9 +4,12 @@ noMangleSql
 file /css/main.css css/main.css text/css
 allow url /css/*
 timeFormat %Y-%m-%d (%a) %H:%M:%S
+safeGet Main/myTransactions
+rewrite style Class/*
 
 $/list
 $/string
+src/Class
 src/Config
 src/Utils
 src/Date

@@ -15,11 +15,11 @@ CREATE TRIGGER Txn_tbl_validate_Balance
 BEFORE INSERT ON Txn_tbl
 FOR EACH ROW
 WHEN
-		NEW.Balance - NEW.Delta
+		(SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) + NEW.Delta
 	<>
-		(SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1)
+		NEW.Balance
 BEGIN
-	SELECT RAISE(ABORT, 'NEW.Balance (' || NEW.Balance || ') - NEW.Delta (' || NEW.Delta || ') does not match previous balance (' || (SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) || ')');
+	SELECT RAISE(ABORT, 'balance_prev + delta ≠ balance_new (' || (SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) || ' + ' || NEW.Delta || ' = ' || ((SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) + New.Delta) || ' ≠ ' || NEW.Balance || ')');
 END;
 
 CREATE TRIGGER Txn_tbl_arrow_of_time

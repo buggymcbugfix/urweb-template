@@ -1,5 +1,5 @@
 {"endpoints":
- [{"method": "GET", "url": "/app.55D47F505CB1D4D0CDB80241E0F2EECCA1D3E3C4.js", "content-type": 
+ [{"method": "GET", "url": "/app.DA39A3EE5E6B4B0D3255BFEF95601890AFD80709.js", "content-type": 
    "text/javascript"},
                       
    {"method": "GET", "url": "/css/main.css", "content-type": "text/css"},
@@ -10,6 +10,4 @@
                                                                 
    {"method": "GET", "url": "Main/users", "content-type": null},
                                                                 
-   {"method": "GET", "url": "Main/myTransactions", "content-type": null},
-                                                                         
-   {"method": "POST", "url": "PocketMoney/collect", "content-type": null}]}
+   {"method": "GET", "url": "Main/myTransactions", "content-type": null}]}

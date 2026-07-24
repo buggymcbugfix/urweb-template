@@ -19,7 +19,7 @@ con row =
 		TxnUserSeq    = userSeq,
 		Timestamp     = time,
 		EffectiveDate = Date.ty,
-		Delta         = Money.delta,
+		Delta         = Money.Delta.ty,
 		Balance       = Money.ty,
 		Category      = serialized category,
 		Description   = string,
@@ -35,7 +35,7 @@ val create :
 	{
 		UserId        : User.id,
 		EffectiveDate : Date.ty,
-		Delta         : Money.delta,
+		Delta         : Money.Delta.ty,
 		Category      : category,
 		Description   : string,
 	}

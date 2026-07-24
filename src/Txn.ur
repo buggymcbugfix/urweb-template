@@ -18,7 +18,7 @@ con row =
 		TxnUserSeq    = userSeq,
 		Timestamp     = time,
 		EffectiveDate = Date.ty,
-		Delta         = Money.delta,
+		Delta         = Money.Delta.ty,
 		Balance       = Money.ty,
 		Category      = serialized category,
 		Description   = string,
@@ -34,7 +34,7 @@ val getForUser userId =
 			SELECT *
 			FROM tbl
 			WHERE tbl.UserId = {[userId]}
-			ORDER BY tbl.EffectiveDate, tbl.Timestamp DESC
+			ORDER BY tbl.TxnUserSeq DESC
 		)
 
 val create r =

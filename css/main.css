@@ -1,6 +1,10 @@
 :root {
-	--main-color: oklch(57.061% 0.23055 299.58);
-	--underline-color: color-mix(in oklch, white 55%, var(--main-color));
+	--color-main: oklch(57.061% 0.23055 299.58);
+	--color-underline: color-mix(in oklch, white 55%, var(--color-main));
+	--color-negative: oklch(70.405% 0.14081 5.459);
+	--color-positive: oklch(83.722% 0.11923 180.394);
+	--color-negative-light: color-mix(in oklch, white 75%, var(--color-negative));
+	--color-positive-light: color-mix(in oklch, white 75%, var(--color-positive));
 }
 
 *,
@@ -17,14 +21,28 @@ body {
 table {
 	border: none;
 	border-collapse: collapse;
+	/* font-family: 'Inconsolata', monospace; */
 }
 
 th, td {
-	border:1pt solid var(--underline-color);
+	border:1pt solid var(--color-underline);
 	padding: 1ex .5em;
 }
 
 th {
 	font-weight: 500;
-	background-color: color-mix(in oklch, white 85%, var(--main-color));
+	background-color: color-mix(in oklch, white 85%, var(--color-main));
+}
+
+tr {
+	&.negative {
+		background-color: var(--color-negative-light);
+	}
+	&.positive {
+		background-color: var(--color-positive-light);
+	}
+}
+
+.right_aligned {
+	text-align: right;
 }
