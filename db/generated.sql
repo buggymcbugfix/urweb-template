@@ -29,6 +29,6 @@ CREATE TABLE PocketMoney_weeklyAmount (
     UserId integer NOT NULL,
     Amount integer NOT NULL,
     Starting text NOT NULL,
-    CONSTRAINT PocketMoney_weeklyAmount_pkey PRIMARY KEY (UserId)
+    CONSTRAINT PocketMoney_weeklyAmount_pkey PRIMARY KEY (Starting, UserId)
 );
 

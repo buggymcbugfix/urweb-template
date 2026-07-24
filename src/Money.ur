@@ -65,6 +65,8 @@ val applyDelta delta money = money + delta
 
 val toDelta m = m
 
+val fromDelta m = m
+
 val testPage =
 	srcN <- source "";
 	return

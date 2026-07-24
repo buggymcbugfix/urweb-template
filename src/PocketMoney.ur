@@ -4,7 +4,7 @@ table weeklyAmount :
 		Amount = Money.ty,
 		Starting = Date.ty,
 	]
-	PRIMARY KEY UserId
+	PRIMARY KEY (UserId, Starting)
 
 val getLatestPocketMoneyTxn userId : transaction (option Date.ty) =
 	let
@@ -25,15 +25,14 @@ val getLatestPocketMoneyTxn userId : transaction (option Date.ty) =
 
 val collectNextFromGivenDate r =
 	today <- Date.today;
-	nextPayday <- return (Date.addDays 7 r.LatestEffectiveDate);
-	if nextPayday <= today then
+	if r.NextPayday <= today then
 		amt <-
 			oneOrNoRowsE1
 				(
 					SELECT weeklyAmount.Amount AS Amount
 					FROM weeklyAmount
-					WHERE weeklyAmount.Starting <= {[nextPayday]}
-					ORDER BY weeklyAmount.Starting ASC
+					WHERE weeklyAmount.Starting <= {[r.NextPayday]}
+					ORDER BY weeklyAmount.Starting DESC
 					LIMIT 1
 				);
 		(
@@ -43,7 +42,7 @@ val collectNextFromGivenDate r =
 				Txn.create
 					{
 						UserId = r.UserId,
-						EffectiveDate = nextPayday,
+						EffectiveDate = r.NextPayday,
 						Delta = Money.toDelta amt,
 						Category = Txn.PocketMoney,
 						Description = ""
@@ -56,7 +55,7 @@ val collectNextFromGivenDate r =
 val collectNext userId =
 	latest <- getLatestPocketMoneyTxn userId;
 	case latest of
-	| Some latest => collectNextFromGivenDate {UserId = userId, LatestEffectiveDate = latest}
+	| Some latest => collectNextFromGivenDate {UserId = userId, NextPayday = Date.addDays 7 latest}
 	| None =>
 		startDate <-
 			oneOrNoRowsE1
@@ -69,7 +68,7 @@ val collectNext userId =
 				);
 		case startDate of
 		| Some startDate =>
-			collectNextFromGivenDate {UserId = userId, LatestEffectiveDate = startDate}
+			collectNextFromGivenDate {UserId = userId, NextPayday = startDate}
 		| None =>
 			error <xml>No weekly amount configured for user {[userId]}</xml>
 
