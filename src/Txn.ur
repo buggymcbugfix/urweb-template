@@ -1,16 +1,30 @@
 type userSeq = int
 
-datatype category =
-	| PocketMoney (* regular pocket money *)
-	| Bonus (* kiddo went above and beyond and earned themselves some extra bees *)
-	| Withdrawal (* cash taken out, e.g. "Papa give me 5, please. No not that, money. I want to buy something from the shop." *)
-	| Deposit (* cash paid in *)
-	| Fine (* kiddo wilfully did something they knew they shouldn't have and I want to dissuade them from repeating *)
-	| Adjustment (* e.g. for opening balance or if we need to correct a previously made mistake *)
-	| TransferOut (* e.g. I bought something for kiddo *)
-	| TransferIn (* e.g. kiddo paid for something for dad *)
+structure Category = struct
+	datatype ty =
+		| PocketMoney (* regular pocket money *)
+		| Bonus (* kiddo went above and beyond and earned themselves some extra bees *)
+		| Withdrawal (* cash taken out, e.g. "Papa give me 5, please. No not that, money. I want to buy something from the shop." *)
+		| Deposit (* cash paid in *)
+		| Fine (* kiddo wilfully did something they knew they shouldn't have and I want to dissuade them from repeating *)
+		| Adjustment (* e.g. for opening balance or if we need to correct a previously made mistake *)
+		| TransferOut (* e.g. I bought something for kiddo *)
+		| TransferIn (* e.g. kiddo paid for something for dad or gave some money to dad (at dad's request) *)
 
-val show_category = mkShow (fn (x : category) => unsafeSerializedToString (serialize x))
+	val enumerate =
+		PocketMoney ::
+		Bonus ::
+		Withdrawal ::
+		Deposit ::
+		Fine ::
+		Adjustment ::
+		TransferOut ::
+		TransferIn ::
+			[]
+
+	val show = mkShow (fn (x : ty) => unsafeSerializedToString (serialize x))
+end
+
 
 con row =
 	[
@@ -20,7 +34,7 @@ con row =
 		EffectiveDate = Date.ty,
 		Delta         = Money.Delta.ty,
 		Balance       = Money.ty,
-		Category      = serialized category,
+		Category      = serialized Category.ty,
 		Description   = string,
 	]
 
