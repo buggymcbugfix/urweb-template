@@ -19,7 +19,7 @@ end
 con row =
 	[
 		UserId        = User.id,
-		TxnUserSeq    = userSeq,
+		UserTxnSeq    = userSeq,
 		Timestamp     = time,
 		EffectiveDate = Date.ty,
 		Delta         = Money.Delta.ty,
@@ -29,7 +29,7 @@ con row =
 	]
 
 table tbl : row
-	PRIMARY KEY (UserId, TxnUserSeq),
+	PRIMARY KEY (UserId, UserTxnSeq),
 	CONSTRAINT Fk_UserId FOREIGN KEY UserId REFERENCES {{User.tbl}}(UserId)
 
 val getForUser : User.id -> transaction (list $row)

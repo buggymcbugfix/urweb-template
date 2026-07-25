@@ -14,14 +14,14 @@ CREATE TABLE User_tbl (
 
 CREATE TABLE Txn_tbl (
     UserId integer NOT NULL,
-    TxnUserSeq integer NOT NULL,
+    UserTxnSeq integer NOT NULL,
     Timestamp text NOT NULL,
     EffectiveDate text NOT NULL,
     Delta integer NOT NULL,
     Balance integer NOT NULL,
     Category text NOT NULL,
     Description text NOT NULL,
-    CONSTRAINT Txn_tbl_pkey PRIMARY KEY (TxnUserSeq, UserId),
+    CONSTRAINT Txn_tbl_pkey PRIMARY KEY (UserTxnSeq, UserId),
     CONSTRAINT Txn_tbl_Fk_UserId FOREIGN KEY (UserId) REFERENCES User_tbl (UserId)
 );
 

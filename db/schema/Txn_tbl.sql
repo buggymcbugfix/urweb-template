@@ -1,8 +1,10 @@
 CREATE TABLE Txn_tbl(
-	TxnUserSeq integer NOT NULL,
-	Timestamp text NOT NULL,
 	UserId integer NOT NULL,
+	UserTxnSeq integer NOT NULL,
+	Timestamp text NOT NULL,
+	EffectiveDate text NOT NULL,
 	Delta integer NOT NULL,
+	Balance integer NOT NULL,
 	Category text NOT NULL,
 	Description text NOT NULL,
 
