@@ -3,6 +3,7 @@ type ty = string
 val show = show_string
 
 val parse str = Some str
+	(* XXX readUtc not implemented client-side *)
 	(* case readUtc (str ^ " 00:00:00") of
 	| Some _ => Some str
 	| None => None *)

@@ -51,3 +51,13 @@ tr {
 	font-size: 60%;
 	color: #777;
 }
+
+.ui_group {
+	border: 1px solid #ddd;
+	border-radius: .2em;
+	margin-bottom: 1.4ex;
+	width: max-content;
+	padding: 1ex;
+	display: flex;
+	gap: 1em;
+}

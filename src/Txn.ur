@@ -8,8 +8,7 @@ structure Category = struct
 		| Deposit (* cash paid in *)
 		| Fine (* kiddo wilfully did something they knew they shouldn't have and I want to dissuade them from repeating *)
 		| Adjustment (* e.g. for opening balance or if we need to correct a previously made mistake *)
-		| TransferOut (* e.g. I bought something for kiddo *)
-		| TransferIn (* e.g. kiddo paid for something for dad or gave some money to dad (at dad's request) *)
+		| Reimbursement (* e.g. kiddo paid for something for dad or gave some money to dad (at dad's request) *)
 
 	val enumerate =
 		PocketMoney ::
@@ -18,8 +17,7 @@ structure Category = struct
 		Deposit ::
 		Fine ::
 		Adjustment ::
-		TransferOut ::
-		TransferIn ::
+		Reimbursement ::
 			[]
 
 	val show = mkShow (fn (x : ty) => unsafeSerializedToString (serialize x))

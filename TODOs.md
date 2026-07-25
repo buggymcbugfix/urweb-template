@@ -2,10 +2,10 @@ TODOs
 =====
 
 - Input validation class
-- Add new transaction
 
 Done
 ====
 
+- Add new transaction
 - Title on transactions page
 - Positive deltas should have `+`

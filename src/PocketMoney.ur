@@ -70,7 +70,8 @@ val collectNext userId =
 		| Some startDate =>
 			collectNextFromGivenDate {UserId = userId, NextPayday = startDate}
 		| None =>
-			error <xml>No weekly amount configured for user {[userId]}</xml>
+			return False
+			(* error <xml>No weekly amount configured for user {[userId]}</xml> *)
 
 fun collect userId =
 	res <- collectNext userId;

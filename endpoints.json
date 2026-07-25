@@ -2,7 +2,7 @@
  [{"method": "GET", "url": "/runtime.678742345B8E282393A78F7E3E4433E00FABF9F2.js", "content-type": 
    "text/javascript"},
                       
-   {"method": "GET", "url": "/app.C69EEA426FD725FE2A3EE3283FDB397DFF46C387.js", "content-type": 
+   {"method": "GET", "url": "/app.2DDD9AD917E93BABA9847232ED1C81C02911AD20.js", "content-type": 
     "text/javascript"},
                        
    {"method": "GET", "url": "/css/main.css", "content-type": "text/css"},
@@ -13,4 +13,8 @@
                                                                 
    {"method": "GET", "url": "Main/users", "content-type": null},
                                                                 
-   {"method": "GET", "url": "Main/myTransactions", "content-type": null}]}
+   {"method": "GET", "url": "Main/myTransactions", "content-type": null},
+                                                                         
+   {"method": "POST", "url": "Txn/create", "content-type": null},
+                                                                 
+   {"method": "POST", "url": "Txn/getForUser", "content-type": null}]}
