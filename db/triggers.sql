@@ -1,25 +1,25 @@
-CREATE TRIGGER Txn_tbl_validate_TxnUserSeq
+CREATE TRIGGER Txn_tbl_validate_UserTxnSeq
 BEFORE INSERT ON Txn_tbl
 WHEN
-		NEW.TxnUserSeq
+		NEW.UserTxnSeq
 	<>
 		COALESCE(
-			(SELECT MAX(TxnUserSeq) + 1 FROM Txn_tbl WHERE UserId = NEW.UserId),
+			(SELECT MAX(UserTxnSeq) + 1 FROM Txn_tbl WHERE UserId = NEW.UserId),
 			1
 		)
 BEGIN
-	SELECT RAISE(ABORT, 'invalid TxnUserSeq sequence: ' || NEW.TxnUserSeq);
+	SELECT RAISE(ABORT, 'invalid UserTxnSeq sequence: ' || NEW.UserTxnSeq);
 END;
 
 CREATE TRIGGER Txn_tbl_validate_Balance
 BEFORE INSERT ON Txn_tbl
 FOR EACH ROW
 WHEN
-		(SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) + NEW.Delta
+		(SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND UserTxnSeq = NEW.UserTxnSeq - 1) + NEW.Delta
 	<>
 		NEW.Balance
 BEGIN
-	SELECT RAISE(ABORT, 'balance_prev + delta ≠ balance_new (' || (SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) || ' + ' || NEW.Delta || ' = ' || ((SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) + New.Delta) || ' ≠ ' || NEW.Balance || ')');
+	SELECT RAISE(ABORT, 'balance_prev + delta ≠ balance_new (' || (SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND UserTxnSeq = NEW.UserTxnSeq - 1) || ' + ' || NEW.Delta || ' = ' || ((SELECT Balance FROM Txn_tbl WHERE UserId = NEW.UserId AND UserTxnSeq = NEW.UserTxnSeq - 1) + New.Delta) || ' ≠ ' || NEW.Balance || ')');
 END;
 
 CREATE TRIGGER Txn_tbl_arrow_of_time
@@ -28,9 +28,9 @@ FOR EACH ROW
 WHEN
 		NEW.Timestamp
 	<
-		(SELECT Timestamp FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1)
+		(SELECT Timestamp FROM Txn_tbl WHERE UserId = NEW.UserId AND UserTxnSeq = NEW.UserTxnSeq - 1)
 BEGIN
-	SELECT RAISE(ABORT, 'NEW.Timestamp (' || NEW.Timestamp || ') is before previous transaction''s timestamp (' || (SELECT Timestamp FROM Txn_tbl WHERE UserId = NEW.UserId AND TxnUserSeq = NEW.TxnUserSeq - 1) || ')');
+	SELECT RAISE(ABORT, 'NEW.Timestamp (' || NEW.Timestamp || ') is before previous transaction''s timestamp (' || (SELECT Timestamp FROM Txn_tbl WHERE UserId = NEW.UserId AND UserTxnSeq = NEW.UserTxnSeq - 1) || ')');
 END;
 
 CREATE TRIGGER Txn_tbl_no_update

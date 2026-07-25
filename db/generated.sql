@@ -12,14 +12,14 @@ CREATE TABLE user_tbl(
 
 CREATE TABLE txn_tbl(
     userid integer NOT NULL,
-    txnuserseq integer NOT NULL,
+    usertxnseq integer NOT NULL,
     timestamp text NOT NULL,
     effectivedate text NOT NULL,
     delta integer NOT NULL,
     balance integer NOT NULL,
     category text NOT NULL,
     description text NOT NULL,
-    CONSTRAINT txn_tbl_pkey PRIMARY KEY (txnUserSeq, userId),
+    CONSTRAINT txn_tbl_pkey PRIMARY KEY (userTxnSeq, userId),
     CONSTRAINT txn_tbl_Fk_UserId
      FOREIGN KEY (userId) REFERENCES user_tbl (userId));
 

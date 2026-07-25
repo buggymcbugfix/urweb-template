@@ -27,7 +27,7 @@ end
 con row =
 	[
 		UserId        = User.id,
-		TxnUserSeq    = userSeq,
+		UserTxnSeq    = userSeq,
 		Timestamp     = time,
 		EffectiveDate = Date.ty,
 		Delta         = Money.Delta.ty,
@@ -37,7 +37,7 @@ con row =
 	]
 
 table tbl : row
-	PRIMARY KEY (UserId, TxnUserSeq),
+	PRIMARY KEY (UserId, UserTxnSeq),
 	CONSTRAINT Fk_UserId FOREIGN KEY UserId REFERENCES {{User.tbl}}(UserId)
 
 val getForUser userId =
@@ -46,39 +46,43 @@ val getForUser userId =
 			SELECT *
 			FROM tbl
 			WHERE tbl.UserId = {[userId]}
-			ORDER BY tbl.TxnUserSeq DESC
+			ORDER BY tbl.UserTxnSeq DESC
 		)
 
 val create r =
-	latestTxn <- oneOrNoRows1 (SELECT tbl.TxnUserSeq, tbl.Balance FROM tbl WHERE tbl.UserId = {[r.UserId]});
-	case latestTxn of
-	| None =>
-		dml
+	prevUserTxnSeq <-
+		oneRowE1
 			(
-				insert tbl
-					{
-						UserId        = (SQL {[r.UserId]}),
-						TxnUserSeq    = (SQL 1),
-						Timestamp     = (SQL CURRENT_TIMESTAMP),
-						EffectiveDate = (SQL {[r.EffectiveDate]}),
-						Delta         = (SQL {[r.Delta]}),
-						Balance       = (SQL {[Money.fromDelta r.Delta]}),
-						Category      = (SQL {[serialize r.Category]}),
-						Description   = (SQL {[r.Description]})
-					}
-			)
-	| Some latestTxn =>
-		dml
-			(
-				insert tbl
-					{
-						UserId        = (SQL {[r.UserId]}),
-						TxnUserSeq    = (SQL {[latestTxn.TxnUserSeq + 1]}),
-						Timestamp     = (SQL CURRENT_TIMESTAMP),
-						EffectiveDate = (SQL {[r.EffectiveDate]}),
-						Delta         = (SQL {[r.Delta]}),
-						Balance       = (SQL {[Money.applyDelta r.Delta latestTxn.Balance]}),
-						Category      = (SQL {[serialize r.Category]}),
-						Description   = (SQL {[r.Description]})
-					}
-			)
+				SELECT MAX(tbl.UserTxnSeq) AS PrevUserTxnSeq
+				FROM tbl 
+				WHERE tbl.UserId = {[r.UserId]}
+			);
+	newBalance <-
+		(
+			case prevUserTxnSeq of
+			| None => return (Money.fromDelta r.Delta)
+			| Some prevUserTxnSeq =>
+				prevBalance <-
+					oneRowE1
+						(
+							SELECT tbl.Balance AS Balance
+							FROM tbl 
+							WHERE tbl.UserTxnSeq = {[prevUserTxnSeq]}
+								AND tbl.UserId = {[r.UserId]}
+						);
+				return (Money.applyDelta r.Delta prevBalance)
+		);
+	dml
+		(
+			insert tbl
+				{
+					UserId        = (SQL {[r.UserId]}),
+					UserTxnSeq    = (SQL {[case prevUserTxnSeq of None => 1 | Some i => i + 1]}),
+					Timestamp     = (SQL CURRENT_TIMESTAMP),
+					EffectiveDate = (SQL {[r.EffectiveDate]}),
+					Delta         = (SQL {[r.Delta]}),
+					Balance       = (SQL {[newBalance]}),
+					Category      = (SQL {[serialize r.Category]}),
+					Description   = (SQL {[r.Description]})
+				}
+		)

@@ -73,7 +73,8 @@ val myTransactions userId =
 											{
 												UserId = userId,
 												EffectiveDate = readError effectiveDate,
-												Delta = readError (show (100. * Option.get 0. delta)),
+												(* Delta = case show (100. * Option.get 0. delta) of "0" => error <xml>Delta invalid</xml> | i => readError i, *)
+												Delta = case delta of None => error <xml>Delta invalid</xml> | Some delta => if delta = 0. || delta > 0. && delta < 0.01 || delta < 0. && delta > -0.01 then error <xml>Bad delta</xml> else readError (show (100. * delta)),
 												Category = deserialize (unsafeSerializedFromString category),
 												Description = description
 											}
