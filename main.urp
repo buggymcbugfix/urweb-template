@@ -9,6 +9,7 @@ rewrite style Class/*
 
 $/list
 $/string
+$/option
 src/Class
 src/Config
 src/Utils

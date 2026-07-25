@@ -5,6 +5,7 @@ val sql_ty : sql_injectable_prim ty
 structure Delta : sig
 	type ty
 	val show : show ty
+	val read : read ty
 	val sql_delta : sql_injectable_prim ty
 	val isNegative : ty -> bool
 end

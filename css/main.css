@@ -46,3 +46,13 @@ tr {
 .right_aligned {
 	text-align: right;
 }
+
+.ui_group {
+	border: 1px solid #ddd;
+	border-radius: .2em;
+	margin-bottom: 1.4ex;
+	width: max-content;
+	padding: 1ex;
+	display: flex;
+	gap: 1em;
+}
