@@ -8,7 +8,11 @@ in
 {
   system ? builtins.currentSystem,
   nixpkgs ? sources.nixpkgs,
-}:
+  # An already evaluated nixpkgs to build against instead of the pinned one,
+  # e.g. from a NixOS configuration: `import sources.<name> { inherit pkgs; }`.
+  # Its config and overlays are kept; ours is added on top.
+  pkgs ? null,
+}@args:
 let
   overlay =
     final: prev:
@@ -24,7 +28,7 @@ let
         };
 
         mlton20210117 = prev.mlton20210117.overrideAttrs (old: {
-          doCheck = false; # borked tests, take AGES to run
+          doCheck = !prev.stdenv.hostPlatform.isDarwin;
         });
 
         build = final.callPackage ./package.nix {
@@ -36,10 +40,16 @@ let
     // {
       inherit myPackages;
     };
-  pkgs = import nixpkgs {
-    config = { };
-    overlays = [ overlay ];
-  };
+  # `args` holds only the arguments actually passed, not defaults.
+  pkgs =
+    if (args.pkgs or null) != null then
+      args.pkgs.extend overlay
+    else
+      import nixpkgs {
+        inherit system;
+        config = { };
+        overlays = [ overlay ];
+      };
 
 in
 pkgs.myPackages.build
