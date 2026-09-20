@@ -1,4 +1,6 @@
-val gitRev = return <xml><body>@GIT_REV@</body></xml>
+val gitRev =
+	rev <- getenv (blessEnvVar "GIT_REV");
+	return <xml><body>{[case rev of None => "unknown" | Some r => r]}</body></xml>
 
 val hello name = return <xml><body>Hello, {[name]}!</body></xml>
 

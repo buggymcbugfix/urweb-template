@@ -31,9 +31,7 @@ let
           doCheck = !prev.stdenv.hostPlatform.isDarwin;
         });
 
-        build = final.callPackage ./package.nix {
-          gitRev = final.lib.sources.commitIdFromGitRepo ./.git; # can't track clean vs dirty
-        };
+        build = final.callPackage ./package.nix { };
       };
     in
     myPackages
@@ -58,6 +56,7 @@ pkgs.myPackages.build
     inputsFrom = [ pkgs.myPackages.build ];
     packages = with pkgs; [
       fswatch
+      git # ,run reads the revision to pass to the app
       nixfmt-tree
       npins
       sqlite-interactive
@@ -124,6 +123,7 @@ pkgs.myPackages.build
           logfiles+=("$logfile")
           printf 'Launching app...\n'
           date +"%Y-%m-%d %H:%M:%S" >>"$logfile"
+          export GIT_REV="$(git describe --always --dirty 2>/dev/null || echo unknown)"
           eval "$(./main.exe -a 127.0.0.1 -p 8000 -P 9000 -d3 3>&1 1>>"$logfile" 2>>"$logfile")"
           if [ "$status" = 'OK' ]; then
             printf 'pid = %s\n' "$pid"

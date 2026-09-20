@@ -4,20 +4,21 @@
   stdenv,
   sqlite,
   urweb-with-libs,
-
-  # Non-package arguments
-  gitRev,
 }:
 let
   APP_NAME = "hello-urweb";
+  root = ./.;
+  # A tarball or store copy of the repo (npins, fetchGit, flake input) has no .git dir
+  tracked = if builtins.pathExists (root + "/.git") then lib.fileset.gitTracked root else root;
+
 in
 stdenv.mkDerivation {
   pname = APP_NAME;
   version = "0.0.0";
 
-  src = lib.fileset.toSource rec {
-    root = ./.;
-    fileset = lib.fileset.intersection (lib.fileset.gitTracked root) (
+  src = lib.fileset.toSource {
+    inherit root;
+    fileset = lib.fileset.intersection tracked (
       lib.fileset.unions [
         (root + /db)
         (root + /main.ur)
@@ -28,10 +29,6 @@ stdenv.mkDerivation {
       ]
     );
   };
-
-  configurePhase = ''
-    substituteInPlace ./main.ur --replace-fail '@GIT_REV@' '${gitRev}'
-  '';
 
   nativeBuildInputs = [
     urweb-with-libs

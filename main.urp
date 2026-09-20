@@ -1,4 +1,5 @@
 rewrite url Main/index
+allow env GIT_REV
 sql db/generated.sql
 noMangleSql
 
