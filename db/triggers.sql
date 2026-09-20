@@ -1,0 +1,1 @@
+-- any database triggers that you do not want to run on the slurped data go here
