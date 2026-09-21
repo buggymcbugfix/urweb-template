@@ -182,6 +182,9 @@ in
       preStart = ''
         if [ ! -e ${dbPath} ]; then
           ${lib.getExe' pkgs.sqlite "sqlite3"} ${dbPath} < ${cfg.package}/share/${name}/db/generated.sql
+          ${lib.getExe' pkgs.sqlite "sqlite3"} ${dbPath} < ${stateDir}/override.sql
+          ${lib.getExe' pkgs.sqlite "sqlite3"} ${dbPath} < ${stateDir}/triggers.sql
+          ${lib.getExe' pkgs.sqlite "sqlite3"} ${dbPath} < ${stateDir}/data.sql
         fi
       '';
 
