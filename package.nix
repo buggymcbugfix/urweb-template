@@ -23,6 +23,7 @@ stdenv.mkDerivation {
     inherit root;
     fileset = lib.fileset.intersection tracked (
       lib.fileset.unions [
+        (root + /css)
         (root + /db)
         (root + /main.ur)
         (root + /main.urp)
