@@ -7,4 +7,4 @@
 #   - systemd unit and socket names
 #   - state directory
 # - VM test
-"hello-urweb"
+"taschengeld"
