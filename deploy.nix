@@ -62,6 +62,12 @@ in
       description = "Host name nginx serves the application on (`server_name`).";
     };
 
+    serverAliases = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = "Server aliases";
+    };
+
     https = {
       enable = mkOption {
         type = types.bool;
@@ -254,6 +260,7 @@ in
       '';
 
       virtualHosts.${cfg.hostName} = {
+        serverAliases = cfg.serverAliases;
         forceSSL = cfg.https.enable;
         enableACME = cfg.https.enable && cfg.https.acme;
         locations."/" = {
