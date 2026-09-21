@@ -13,7 +13,7 @@ val mkPage (x : xbody) =
 			</body>
 		</xml>
 
-val hello name = mkPage <xml>Hello, {[name]}!</xml>
+val hello name = return <xml><body>Hello, {[name]}!</body></xml>
 
 val renderTransactionTr r =
 	<xml>
